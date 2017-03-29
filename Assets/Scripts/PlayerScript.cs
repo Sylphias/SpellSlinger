@@ -55,11 +55,6 @@ public class PlayerScript : NetworkBehaviour {
 		spawnPoint = transform.Find("SpawnPoint");
 
 		playerAnimations = gameObject.GetComponent<Animation> ();
-		playerAnimations.wrapMode = WrapMode.Loop;
-		playerAnimations ["Magic Attack"].wrapMode = WrapMode.Once;
-		playerAnimations["Magic Attack"].layer = 1;	
-
-		playerAnimations.Play ();
         button0 = GameObject.Find("Cast0").GetComponent<Button>();
         Debug.Log("AddingListener");
         button0.onClick.AddListener(delegate () { this.CmdCast0(); });
@@ -90,12 +85,15 @@ public class PlayerScript : NetworkBehaviour {
     }
 
     public void Move()
-    {
-		if (Mathf.Abs(Input.GetAxis("Vertical")) > 0.1)
-			playerAnimations.CrossFade("Walk");
+    {	
+		
+        moveInput = joystick.getInput();
+
+		if (Mathf.Abs (moveInput.x) > 0.1 || Mathf.Abs (moveInput.z) > 0.1) {
+			playerAnimations.CrossFade ("Walk");
+		}
 		else
 			playerAnimations.CrossFade("Idle1");
-        moveInput = joystick.getInput();
         moveVelocity = moveInput * moveSpeed;
         playerRigidBody.velocity = moveVelocity;
         //make the player look at the right direction
@@ -105,8 +103,7 @@ public class PlayerScript : NetworkBehaviour {
     [Command]
     public void CmdCast0()
     {
-		playerAnimations.CrossFade("Magic Attack");
-        Debug.Log("Preparing to cast");
+		playerAnimations.CrossFade("Attack");
         if (spellCooldown[0]==0)
         {
             Debug.Log("Casting spell 1");

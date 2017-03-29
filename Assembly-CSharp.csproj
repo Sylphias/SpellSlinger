@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Arena\Example\ImageEffects\Scripts\ScreenSpaceAmbientOcclusion.cs" />
+     <Compile Include="Assets\Arena\Example\ParticleSystems\Scripts\ParticleSystemMultiplier.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\ButtonScript.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\DragMouseOrbit.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\FireProjectile.cs" />
@@ -80,6 +82,7 @@
      <Compile Include="Assets\Scripts\TestController.cs" />
      <Compile Include="Assets\Scripts\VirtualJoystick.cs" />
      <None Include="Assets\Models\MagicArsenal\MagicArsenal - ReadMe.txt" />
+     <None Include="Assets\Arena\Example\ImageEffects\Shaders\SSAOShader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

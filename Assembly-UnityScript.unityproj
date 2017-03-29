@@ -49,6 +49,7 @@
      <Compile Include="Assets\Models\MagicArsenal\Scripts\LightFlicker.js" />
      <Compile Include="Assets\Models\MagicArsenal\Scripts\RotateParticles.js" />
      <None Include="Assets\Models\MagicArsenal\MagicArsenal - ReadMe.txt" />
+     <None Include="Assets\Arena\Example\ImageEffects\Shaders\SSAOShader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

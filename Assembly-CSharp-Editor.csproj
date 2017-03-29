@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\VSCode\Plugins\Editor\VSCode.cs" />
      <None Include="Assets\Models\MagicArsenal\MagicArsenal - ReadMe.txt" />
+     <None Include="Assets\Arena\Example\ImageEffects\Shaders\SSAOShader.shader" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
