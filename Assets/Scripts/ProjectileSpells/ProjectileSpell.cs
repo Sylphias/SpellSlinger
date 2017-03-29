@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
-using System.Reflection;
 using Spells;
 public class ProjectileSpell: NetworkBehaviour,ISpell,IProjectile{
 	private bool isCooldown, isDamage;

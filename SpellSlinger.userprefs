@@ -1,0 +1,25 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerController.cs">
+    <Files>
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="10" Column="19" />
+      <File FileName="Assets/Scripts/ProjectileSpells/Fireball.cs" Line="7" Column="40" />
+      <File FileName="Assets/Scripts/HealthbarController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SpellScript.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/VirtualJoystick.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ProjectileSpells/ProjectileSpell.cs" Line="59" Column="14" />
+    </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>swiftnessPrefab</Value>
+          <Value>NetworkServer.localClientActive</Value>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

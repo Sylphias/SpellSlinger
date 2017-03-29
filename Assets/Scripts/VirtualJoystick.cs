@@ -50,7 +50,6 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 
     //return horizontal reference for player movement
