@@ -19,3 +19,5 @@
 /Users/Ilya/personal-projects/SpellSlinger/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/Ilya/personal-projects/SpellSlinger/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/Ilya/personal-projects/SpellSlinger/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/Ilya/personal-projects/SpellSlinger/Temp/bin/Debug/UnityEngine.Advertisements.dll
+/Users/Ilya/personal-projects/SpellSlinger/Temp/bin/Debug/UnityEngine.Purchasing.dll

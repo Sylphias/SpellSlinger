@@ -10,24 +10,20 @@ public class PlayerScript : NetworkBehaviour {
 	private List<IBuffable> buffList= new List<IBuffable> ();
 
     //stats (movement speed, spells)
-    private float moveSpeed = 5;
+    private float moveSpeed;
     public string[] spellList = new string[4] { "Fireball", "Iceball", "Earthwall", "Debuff" };
     public float[] spellCooldown = new float[4] { 0, 0, 0, 0 };
-	private float rotationSpeed= 100;
+	private float rotationSpeed;
     //private List<IBuffable> buffList = new List<IBuffable>();
 
     //other supporting vars
     private Vector3 moveVelocity;
  
     //objects (for reference to objects in game)
-    public Rigidbody playerRigidBody;
+    private Rigidbody playerRigidBody;
     public Transform spawnPoint;
-    public Button button0;
-    public Button button1;
-    public Button button2;
-    public Button button3;
+    private Button button0, button1, button2, button3;
 
-	private Animation playerAnimations;
 
     //control (to control player)
     public VirtualJoystick joystick;
@@ -44,33 +40,45 @@ public class PlayerScript : NetworkBehaviour {
     // Use this for initialization
     private void Start()
     {
-        if (!isLocalPlayer)
-        {
-            return;
-        }
-
-        hb = gameObject.GetComponent<HealthbarController> ();
-        joystick = GameObject.Find("Joystick").GetComponent<VirtualJoystick>();
-        playerRigidBody = GetComponent<Rigidbody>();
-		spawnPoint = transform.Find("SpawnPoint");
-
-		playerAnimations = gameObject.GetComponent<Animation> ();
-        button0 = GameObject.Find("Cast0").GetComponent<Button>();
-        Debug.Log("AddingListener");
-        button0.onClick.AddListener(delegate () { this.CmdCast0(); });
-
-//        button1 = GameObject.Find("Cast1").GetComponent<Button>();
-//        button1.onClick.AddListener(delegate () { this.CmdCast1(); });
-//
-//        button2 = GameObject.Find("Cast2").GetComponent<Button>();
-//		button2.onClick.AddListener(delegate () { this.CmdCast2(); });
-//        
-//
-//        button3 = GameObject.Find("Cast3").GetComponent<Button>();
-//		button3.onClick.AddListener(delegate () { this.CmdCast3(); });
+        
 //        
     }
 
+
+	public override void OnStartLocalPlayer(){
+		if (!isLocalPlayer)
+		{
+			return;
+		}
+
+		// Initialize Player stats
+		moveSpeed = 1;
+		rotationSpeed = 1;
+
+
+
+		spawnPoint = gameObject.transform.Find("SpawnPoint");
+		joystick = GameObject.Find("Joystick").GetComponent<VirtualJoystick>();
+		playerRigidBody = GetComponent<Rigidbody>();
+
+
+		//		playerAnimations = gameObject.GetComponent<Animation> ();
+		button0 = GameObject.Find("Cast0").GetComponent<Button>();
+		Debug.Log("AddingListener");
+		button0.onClick.AddListener(delegate () { this.CmdCast0(); });
+
+		Debug.Log ("Button Initialized");
+		//        button1 = GameObject.Find("Cast1").GetComponent<Button>();
+		//        button1.onClick.AddListener(delegate () { this.CmdCast1(); });
+		//
+		//        button2 = GameObject.Find("Cast2").GetComponent<Button>();
+		//		button2.onClick.AddListener(delegate () { this.CmdCast2(); });
+		//        
+		//
+		//        button3 = GameObject.Find("Cast3").GetComponent<Button>();
+		//		button3.onClick.AddListener(delegate () { this.CmdCast3(); });
+	
+	}
 
     // Update is called once per frame
     void Update ()
@@ -88,12 +96,12 @@ public class PlayerScript : NetworkBehaviour {
     {	
 		
         moveInput = joystick.getInput();
-
-		if (Mathf.Abs (moveInput.x) > 0.1 || Mathf.Abs (moveInput.z) > 0.1) {
-			playerAnimations.CrossFade ("Walk");
-		}
-		else
-			playerAnimations.CrossFade("Idle1");
+//
+//		if (Mathf.Abs (moveInput.x) > 0.1 || Mathf.Abs (moveInput.z) > 0.1) {
+//			playerAnimations.CrossFade ("Walk");
+//		}
+//		else
+//			playerAnimations.CrossFade("Idle1");
         moveVelocity = moveInput * moveSpeed;
         playerRigidBody.velocity = moveVelocity;
         //make the player look at the right direction
@@ -103,7 +111,8 @@ public class PlayerScript : NetworkBehaviour {
     [Command]
     public void CmdCast0()
     {
-		playerAnimations.CrossFade("Attack");
+//		playerAnimations.CrossFade("Attack");
+		Debug.Log("Casting spel");
         if (spellCooldown[0]==0)
         {
             Debug.Log("Casting spell 1");
