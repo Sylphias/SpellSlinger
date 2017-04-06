@@ -72,6 +72,9 @@
      <Compile Include="Assets\Scripts\Interfaces\INova.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IProjectile.cs" />
      <Compile Include="Assets\Scripts\Interfaces\ISpell.cs" />
+     <Compile Include="Assets\Scripts\Networking\BuffableStruct.cs" />
+     <Compile Include="Assets\Scripts\Networking\PlayerMessage.cs" />
+     <Compile Include="Assets\Scripts\Networking\Player_SyncPosition.cs" />
      <Compile Include="Assets\Scripts\Novas\FrostNova.cs" />
      <Compile Include="Assets\Scripts\Novas\NovaSpells.cs" />
      <Compile Include="Assets\Scripts\PlayerScript.cs" />

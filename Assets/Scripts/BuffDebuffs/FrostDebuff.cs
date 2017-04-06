@@ -7,7 +7,7 @@ namespace Spells{
 		private float finishTime;
 		private float tickTime, speedMultiplier, oldSpeedValue, oldRotationValue;
 		public FrostDebuff (float duration,float tickTime,float speedMult, float speed, float rotation){
-			finishTime =Time.time + duration;
+			finishTime =Time.time + 5;
 			speedMultiplier = speedMult;
 			this.tickTime = tickTime;
 			this.oldSpeedValue = speed;
@@ -17,7 +17,7 @@ namespace Spells{
 		public FrostDebuff(float speed,float rotation){
 			finishTime = Time.time + 5.0f; // Adjust the slow timing
 			tickTime = 0;
-			speedMultiplier = 2f;
+			speedMultiplier = 0.2f;
 			oldSpeedValue = speed;
 			oldRotationValue = rotation;
 		}

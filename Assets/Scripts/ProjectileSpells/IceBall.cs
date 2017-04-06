@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 namespace Spells{
 	public class IceBall : ProjectileSpell {
 		private GameObject impactPrefab;
@@ -12,6 +13,7 @@ namespace Spells{
 			ProjectileSpeed = 7;
 			ExplosionForce = 10;
 			Duration = 5;
+			Radius = 10;
 			impactPrefab = Resources.Load ("FrostImpactMega", typeof(GameObject))as GameObject;
 			Destroy (gameObject, Duration);
 		}
@@ -31,6 +33,8 @@ namespace Spells{
 			explosionScan (messages, colliders, explosionPoint);
 			Destroy (go, 1);
 		}
+			
+
 		// Update is called once per frame
 		void Update () {
 			transform.Translate (Vector3.forward*Time.deltaTime*ProjectileSpeed);	

@@ -1,19 +1,25 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ProjectileSpells/Fireball.cs">
     <Files>
-      <File FileName="Assets/Scripts/HealthbarController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ProjectileSpells/Fireball.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ProjectileSpells/ProjectileSpell.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ProjectileSpells/IceBall.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Networking/BuffableStruct.cs" Line="4" Column="22" />
+      <File FileName="Assets/Scripts/Networking/PlayerMessage.cs" Line="27" Column="2" />
+      <File FileName="Assets/Scripts/BuffDebuffs/SpeedBuff.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HealthbarController.cs" Line="32" Column="1" />
+      <File FileName="Assets/Scripts/ProjectileSpells/Fireball.cs" Line="18" Column="17" />
+      <File FileName="Assets/Scripts/ProjectileSpells/ProjectileSpell.cs" Line="59" Column="4" />
+      <File FileName="Assets/Scripts/ProjectileSpells/IceBall.cs" Line="34" Column="1" />
       <File FileName="Assets/Scripts/FaceCameraScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlayerScript.cs" Line="71" Column="1" />
+      <File FileName="Assets/Scripts/PlayerScript.cs" Line="109" Column="6" />
+      <File FileName="Assets/Scripts/Networking/Player_SyncPosition.cs" Line="15" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/Ilya/personal-projects/SpellSlinger/Assets/Scripts/PlayerScript.cs" line="109" column="1" />
-      <Breakpoint file="/Users/Ilya/personal-projects/SpellSlinger/Assets/Scripts/PlayerScript.cs" line="46" column="1" />
+      <Breakpoint file="/Users/Ilya/personal-projects/SpellSlinger/Assets/Scripts/ProjectileSpells/ProjectileSpell.cs" line="85" column="1" />
+      <Breakpoint file="/Users/Ilya/personal-projects/SpellSlinger/Assets/Scripts/PlayerScript.cs" line="224" column="1" />
+      <Breakpoint file="/Users/Ilya/personal-projects/SpellSlinger/Assets/Scripts/ProjectileSpells/ProjectileSpell.cs" line="55" column="1" />
+      <Breakpoint file="/Users/Ilya/personal-projects/SpellSlinger/Assets/Scripts/ProjectileSpells/IceBall.cs" line="30" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -58367,10 +58367,10 @@ MonoBehaviour:
   m_OfflineScene: 
   m_OnlineScene: Main
   m_SpawnPrefabs:
-  - {fileID: 100010, guid: b32f835e658efa1419ad0ae6b033b81f, type: 2}
   - {fileID: 100012, guid: a120b6327dd1b41469211324af03df8c, type: 2}
+  - {fileID: 100010, guid: b32f835e658efa1419ad0ae6b033b81f, type: 2}
   - {fileID: 131830, guid: 2878409c5340b4f1cb1480bfc14cce92, type: 2}
-  - {fileID: 0}
+  - {fileID: 1000010160601864, guid: 8ff92e393239e4c9ba2114869f133e6a, type: 2}
   - {fileID: 0}
   m_CustomConfig: 0
   m_MaxConnections: 4

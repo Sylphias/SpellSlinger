@@ -14,8 +14,9 @@ namespace Spells{
 		void Start () {
 			Damage = 10;
 			ProjectileSpeed = 7;
-			ExplosionForce = 10;
+			ExplosionForce = 100;
 			Duration = 5;
+			Radius = 10;
 			impactPrefab = Resources.Load ("FireImpactMega", typeof(GameObject))as GameObject;
 			Destroy (gameObject, Duration);
 		}
@@ -32,6 +33,7 @@ namespace Spells{
 			Collider[] colliders = Physics.OverlapSphere (explosionPoint,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
 			messages.Add ("TakeDamage", Damage);
+			messages.Add ("Chilled", 0.2f);
 			explosionScan (messages, colliders, explosionPoint);
 			Destroy (go, 1);
 		}

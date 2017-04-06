@@ -11,7 +11,7 @@ namespace Spells
 		private float tickTime, speedMultiplier, oldSpeedValue, oldRotationValue;
 
 		public SwiftBuff (float duration,float tickTime,float speedMult, float speed, float rotation){
-			finishTime =Time.time + duration;
+			finishTime =Time.time + 5;
 			speedMultiplier = speedMult;
 			this.tickTime = tickTime;
 			this.oldSpeedValue = speed;

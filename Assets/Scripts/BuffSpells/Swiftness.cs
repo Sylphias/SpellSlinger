@@ -24,7 +24,7 @@ namespace Spells{
 			if (!go.GetComponent<ParticleSystem> ().IsAlive ()) {
 				Destroy (go);
 			}
-			Player.GetComponent<PlayerScript>().Swift (2);
+			Player.GetComponent<PlayerScript>().Swift ();
 			Destroy (gameObject,5);
 		}
 
