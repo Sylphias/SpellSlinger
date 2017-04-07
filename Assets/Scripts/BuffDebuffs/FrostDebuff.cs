@@ -51,15 +51,15 @@ namespace Spells{
 		}
 
 		public void Reset(Component victim){
-			if (victim as PlayerScript) {
-				PlayerScript ps = (PlayerScript)victim;
+			if (victim as Player) {
+				Player ps = (Player)victim;
 				ps.MoveSpeed = oldSpeedValue;
 			}
 		}
 			
 		public void Apply(Component victim){
-			if (victim as PlayerScript) {
-				PlayerScript ps = (PlayerScript)victim;
+			if (victim as Player) {
+				Player ps = (Player)victim;
 				ps.MoveSpeed= oldSpeedValue*speedMultiplier;
 			}
 		}

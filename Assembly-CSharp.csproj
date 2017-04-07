@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Arena\Example\ImageEffects\Scripts\ScreenSpaceAmbientOcclusion.cs" />
      <Compile Include="Assets\Arena\Example\ParticleSystems\Scripts\ParticleSystemMultiplier.cs" />
+     <Compile Include="Assets\GameManager.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\ButtonScript.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\DragMouseOrbit.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\FireProjectile.cs" />
@@ -77,7 +78,7 @@
      <Compile Include="Assets\Scripts\Networking\Player_SyncPosition.cs" />
      <Compile Include="Assets\Scripts\Novas\FrostNova.cs" />
      <Compile Include="Assets\Scripts\Novas\NovaSpells.cs" />
-     <Compile Include="Assets\Scripts\PlayerScript.cs" />
+     <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\ProjectileSpells\Fireball.cs" />
      <Compile Include="Assets\Scripts\ProjectileSpells\IceBall.cs" />
      <Compile Include="Assets\Scripts\ProjectileSpells\ProjectileSpell.cs" />

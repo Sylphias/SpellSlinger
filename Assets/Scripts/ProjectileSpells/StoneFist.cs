@@ -37,7 +37,7 @@ namespace Spells
 		void OnCollisionEnter(Collision col){
 			Debug.Log (col.collider.tag);
 			if(col.collider.tag =="Player"){
-				col.collider.SendMessage ("TakeDamage", 10);
+				col.collider.SendMessage ("RpcTakeDamage", 10);
 				col.collider.GetComponent<Rigidbody> ().AddForce (transform.forward*10,ForceMode.Impulse);
 			}
 			else{
@@ -58,7 +58,7 @@ namespace Spells
 			explosionPoint = gameObject.transform.position;
 			Collider[] colliders = Physics.OverlapSphere (explosionPoint,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
-			messages.Add ("TakeDamage", Damage);
+			messages.Add ("RpcTakeDamage", Damage);
 			explosionScan (messages, colliders, explosionPoint);
 			Destroy (go, 1);
 		}

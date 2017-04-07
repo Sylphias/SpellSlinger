@@ -254,9 +254,7 @@ GameObject:
   - component: {fileID: 136792330271992754}
   - component: {fileID: 114030119831690608}
   - component: {fileID: 114967623478114274}
-  - component: {fileID: 114084975080674010}
   - component: {fileID: 114603940993444856}
-  - component: {fileID: 114635824065702274}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -1637,19 +1635,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &114084975080674010
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1248202101467086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fe44c612cdc874e9573b53cd0465f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthbar: {fileID: 0}
-  recovery: 3
 --- !u!114 &114312554680987844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1721,7 +1706,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1248202101467086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55cd099fc16c84ca88324a894eb2402f, type: 3}
+  m_Script: {fileID: 11500000, guid: 049922614ee9a4fc7a12ad30dc5cadd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerUniqueIdentity: 
@@ -1738,19 +1723,6 @@ MonoBehaviour:
   - 0
   spawnPoint: {fileID: 4336889038356644}
   joystick: {fileID: 0}
---- !u!114 &114635824065702274
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1248202101467086}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c51c0564113c742fda9a3a8d1f9c34ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myTransform: {fileID: 4033742227793898}
-  lerpRate: 15
 --- !u!114 &114967623478114274
 MonoBehaviour:
   m_ObjectHideFlags: 1

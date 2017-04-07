@@ -59,28 +59,28 @@ public class ProjectileSpell: NetworkBehaviour,ISpell,IProjectile{
 
 			if (c.tag.Equals ("Player")) {
 				Rigidbody otherPlayerBody = c.GetComponent<Rigidbody> ();
-				PlayerScript player = c.GetComponent<PlayerScript>();
+				Player player = c.GetComponent<Player>();
 				RaycastHit rch;
 				Physics.Linecast (gameObject.transform.position, otherPlayerBody.position, out rch);
 				if(rch.collider.gameObject.tag == "Player"){
 					otherPlayerBody.AddExplosionForce (ExplosionForce, explosionPoint, Radius, 1, ForceMode.Impulse);
-
 					foreach(DictionaryEntry message in messages){
 						string method = message.Key as string;
-						float value = (float)message.Value;
-						CmdUpdatePlayerWithMessage(player.playerUniqueIdentity, method,value);
+						float value = (float)message.Value;	
+						Debug.Log(player.transform.name);
+						CmdUpdatePlayerWithMessage(player.transform.name, method,value);
 					}
 				}
 			}
 		}
 	}
 	// Think about refactoring later. complete core features first.
-	[Command]
 	private void CmdUpdatePlayerWithMessage(string uniqueID, string method, float value)
 	{
 		Debug.Log ("Sending message");
+		GameObject[] rawr = GameObject.FindGameObjectsWithTag ("Player");
 		GameObject go = GameObject.Find(uniqueID);
-		PlayerScript player = go.GetComponent<PlayerScript>();
+		Player player = go.GetComponent<Player>();
 		System.Type type = player.GetType();
 		object[] values = { value };
 		MethodInfo meth = type.GetMethod(method);
