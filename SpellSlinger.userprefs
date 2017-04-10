@@ -1,13 +1,8 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Novas/NovaSpells.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MainMenuScripts\LobbyManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Player.cs" Line="123" Column="1" />
-      <File FileName="Assets/Scripts/Barriers/EarthWall.cs" Line="26" Column="1" />
-      <File FileName="Assets/GameManager.cs" Line="38" Column="3" />
-      <File FileName="Assets/Scripts/ProjectileSpells/Fireball.cs" Line="10" Column="1" />
-      <File FileName="Assets/Scripts/Novas/FrostNova.cs" Line="13" Column="18" />
-      <File FileName="Assets/Scripts/Novas/NovaSpells.cs" Line="16" Column="12" />
+      <File FileName="Assets\Scripts\MainMenuScripts\LobbyManager.cs" Line="238" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
