@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MainMenuScripts\LobbyManager.cs">
+    <Files>
+      <File FileName="Assets\Scripts\MainMenuScripts\LobbyManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MainMenuScripts\HostRoom.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MainMenuScripts\EditCharacter.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MainMenuScripts\SpellOption.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MainMenuScripts\PlayerManager.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
