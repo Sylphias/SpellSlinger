@@ -1,30 +1,29 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 //This script is for the behaviour of the earth wall shield. 
 //Expire time is the duration of how long the earth shield will last
 
-
-public class EarthWall : MonoBehaviour {
-	public float expireTime;
-	private int counter;
-	// Use this for initialization
-	void Start () {
-		counter = 0;
-		Destroy (gameObject, expireTime);
-	}
-	
-	// Update is called once per frame
-
-	void Update () {
-	}
-
-	void OnTriggerEnter(Collider col){
-		if (col.tag != "player") {
-			counter++;
+namespace Spells{
+	public class EarthWall : BarrierSpells {
+		//Sets default values to the spell
+		public override void Init(){
+			Duration = 10;
+			Charges = 5;
+			Cooldown = 10;
 		}
-		if (counter == 5) {
-			Destroy(gameObject);
+		void Start () {
+			Destroy(gameObject,Duration);
+		}
+		
+		// Update is called once per frame
+
+		void Update () {
+		}
+
+		void OnTriggerEnter(Collider col){
+			OnHitReduceCharge(col);
 		}
 	}
 }

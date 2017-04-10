@@ -1,9 +1,9 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{84296D3C-9E3D-D484-A548-38A213D042C0}") = "SpellSlinger", "Assembly-CSharp.csproj", "{1A52A125-D0B8-B1EF-BA85-91E5557506B3}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellSlinger", "Assembly-CSharp.csproj", "{1A52A125-D0B8-B1EF-BA85-91E5557506B3}"
 EndProject
-Project("{84296D3C-9E3D-D484-A548-38A213D042C0}") = "SpellSlinger", "Assembly-CSharp-Editor.csproj", "{E991FD1E-4F08-B4D7-3BB7-28BA237CC244}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellSlinger", "Assembly-CSharp-Editor.csproj", "{E991FD1E-4F08-B4D7-3BB7-28BA237CC244}"
 EndProject
 Project("{84296D3C-9E3D-D484-A548-38A213D042C0}") = "SpellSlinger", "Assembly-UnityScript.unityproj", "{898EB646-1886-6D41-8EE8-7E50335FFD2A}"
 EndProject

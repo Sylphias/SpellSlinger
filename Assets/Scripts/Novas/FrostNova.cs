@@ -2,27 +2,28 @@
 using UnityEngine;
 namespace Spells
 {
-	public class FrostNova:NovaSpells
+	public class FrostNova:NovaSpell
 	{
 		private ContactPoint point;
 
+		public override void Init ()
+		{
+			Radius = 50;
+			Damage = 40;
+			Cooldown = 10;
+			ExplosionForce = 0;
+		}
+
 		// Use this for initialization
 		void Start () {
-//			GameObject impactPrefab = AssetDatabase.LoadAssetAtPath ("Assets/MagicArsenal/MagicProjectiles/Prefabs/Frost/FrostImpactMega.prefab", typeof(GameObject))as GameObject;
-//			Instantiate (impactPrefab);
 			Collider[] colliders = Physics.OverlapSphere (gameObject.transform.position,Radius);
+			GetComponent<ParticleSystem> ().Play();
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
-			messages.Add ("TakeDamage", Damage);
-			messages.Add ("Chilled", 0.5f);
-			explosionScan (messages, colliders, gameObject.transform.position);
+			messages.Add ("RpcTakeDamage", Damage);
+			messages.Add ("RpcChilled", 0.5f);
+			ExplosionUtilities.ExplosionScan (this,messages, colliders, gameObject.transform.position);
 			Destroy (gameObject);
 		}
-
-		// Update is called once per frame
-		void Update () {
-
-		}
-
 	}
 }
 

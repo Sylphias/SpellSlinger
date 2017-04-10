@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 namespace Spells{
-	public class Swiftness : BuffSpells {
+	public class Swiftness : BuffSpell {
 		private float speedModifier;
 
 		public float SpeedModifier{
@@ -9,11 +9,15 @@ namespace Spells{
 			set{ speedModifier = value; }
 		}
 
-		public void initialize(float duration, float cooldown,GameObject player,float speedModifier){
+		public void Init(float duration, float cooldown,GameObject player,float speedModifier){
 			Duration = duration;
 			Cooldown = cooldown;
 			Player = player;
 			this.speedModifier = speedModifier;
+		}
+
+		public override void Init(){
+			Cooldown = 10;
 		}
 
 		// Use this for initialization
@@ -21,10 +25,8 @@ namespace Spells{
 			gameObject.transform.Rotate (-90, 0, 0);
 			GameObject swiftnessEnchantPrefab = Resources.Load ("StormEnchant", typeof(GameObject))as GameObject;
 			GameObject go = Instantiate (swiftnessEnchantPrefab,gameObject.transform.position,gameObject.transform.rotation) as GameObject;
-			if (!go.GetComponent<ParticleSystem> ().IsAlive ()) {
-				Destroy (go);
-			}
 			Player.GetComponent<Player>().RpcSwift ();
+			Destroy (go,Duration);
 			Destroy (gameObject,5);
 		}
 

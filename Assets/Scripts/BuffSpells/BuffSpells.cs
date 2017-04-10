@@ -1,31 +1,21 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Networking;
 namespace Spells
 {
-	public class BuffSpells:MonoBehaviour,IBuffSpell
+	public abstract class BuffSpell:NetworkBehaviour,IBuffSpell
 	{
-		private float cooldown, duration;
+		private float cooldown =10, duration;
 		private GameObject player;
-		public float Cooldown {
-			get{ return cooldown; }
-			set{ cooldown = value; }
-		}
-		public float Duration {
-			get{ return duration; }
-			set{ duration = value; }
-		}
 
-		public GameObject Player {
-			get{ return player; }
-			set{ player = value; }
+		public string GetSpellType{
+			get{return "buff";}
 		}
+		public float Cooldown { get; set;}
+		public float Duration { get; set;}
+		public GameObject Player { get; set;}
 
-		public void initialize(float duration, float Cooldown,GameObject player){
-			this.cooldown = cooldown;
-			this.duration = duration;
-			this.player = player;
-		}
-
+		public abstract void Init ();
 	}
 }
 

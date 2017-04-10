@@ -2,19 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+
 namespace Spells{
 	public class IceBall : ProjectileSpell {
 		private GameObject impactPrefab;
 		private ContactPoint point;
 
 		// Use this for initialization
-		void Start () {
+		public override void Init ()
+		{
 			Damage = 10;
-			ProjectileSpeed = 7;
+			ProjectileSpeed = 10;
 			ExplosionForce = 10;
 			Duration = 5;
 			Radius = 10;
-			impactPrefab = Resources.Load ("FrostImpactMega", typeof(GameObject))as GameObject;
+			Cooldown = 2;
+		}
+
+		void Start () {
+			impactPrefab = Resources.Load ("Spells/FrostImpactMega", typeof(GameObject))as GameObject;
 			Destroy (gameObject, Duration);
 		}
 
@@ -27,11 +33,11 @@ namespace Spells{
 			GameObject go = (GameObject)Instantiate (impactPrefab, gameObject.transform.position, gameObject.transform.rotation);
 			Vector3 explosionPoint;
 			explosionPoint = gameObject.transform.position;
-			Collider[] colliders = Physics.OverlapSphere (explosionPoint,Radius);
+			Collider[] colliders = Physics.OverlapSphere (gameObject.transform.position,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
 			messages.Add ("RpcTakeDamage", Damage);
 			messages.Add ("RpcChilled", 0.2f);
-			explosionScan (messages, colliders, explosionPoint);
+			ExplosionUtilities.ExplosionScan (this,messages, colliders,gameObject.transform.position);
 			Destroy (go, 1);
 		}
 			

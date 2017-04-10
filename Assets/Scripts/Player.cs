@@ -12,15 +12,19 @@ public class Player : NetworkBehaviour {
     public GameObject bulletPrefab;
 
 
-    //stats (movement speed, spells)
 
-    public string[] spellList = new string[4] { "Fireball", "Iceball", "Earthwall", "Stonefist" };
+	
+	public string[]spellList;
     
-	public float[] spellCooldown = new float[4] { 0, 0, 0, 0 };
+	float[] spellCooldown = new float[4] { 0, 0, 0, 0 };
+	float[] spellLastCast = new float[4] { 0, 0, 0, 0 };
+
+
+	Button [] buttonList = new Button[4];
 
 	// We need to sync the speed and rotation of the player.
 	[SyncVar]
-	private float rotationSpeed,moveSpeed;
+	private float rotationSpeed,moveSpeed,damageMultiplier = 1 , radiusMultiplier = 1 , projectileSpeedMultiplier = 1 , knockbackModifier = 1;
 
 	// We need to sync the buff list for the player.
 	private List<IBuffable> buffList= new List<IBuffable> ();
@@ -31,10 +35,9 @@ public class Player : NetworkBehaviour {
     //objects (for reference to objects in game)
     private Rigidbody playerRigidBody;
     public Transform spawnPoint;
-    private Button button0, button1, button2, button3;
 
     //control (to control player)
-    public VirtualJoystick joystick;
+    private VirtualJoystick joystick;
     private Vector3 moveInput;
 
 	public float MoveSpeed{
@@ -53,6 +56,7 @@ public class Player : NetworkBehaviour {
 	}       
 
 	// Generate Player ID only once player has joined the server
+
 	public override void OnStartClient(){
 		base.OnStartClient();
 		string _netID =  GetComponent<NetworkIdentity>().netId.ToString();
@@ -60,80 +64,99 @@ public class Player : NetworkBehaviour {
 		GameManager.RegisterPlayer(_netID,_player);
 	}
 
-	// Set default fields for player when player object is created (Handled by the machine)
-	public override void OnStartLocalPlayer(){
-		if (!isLocalPlayer)
-		{
-			return;
-		}
-
+	 void Start(){
+//		if (!isLocalPlayer)
+//		{
+//			return;
+//		}
 		// Initialize Player stats
+		spellList = new string[4] { "Fireball", "Earthwall", "Frostnova", "Stonefist" };
 		moveSpeed = 30;
 		rotationSpeed = 5;
+		InitializeButtons ();
 		joystick = GameObject.Find("Joystick").GetComponent<VirtualJoystick>();
+	}
 
 
-		spawnPoint = gameObject.transform.Find("SpawnPoint");
-		playerRigidBody = GetComponent<Rigidbody>();
-		//		playerAnimations = gameObject.GetComponent<Animation> ();
-
-		#region declareButtons
-		button0 = GameObject.Find("Cast0").GetComponent<Button>();
-		button0.onClick.AddListener(delegate () { this.CmdCast(0); });
-        button1 = GameObject.Find("Cast1").GetComponent<Button>();
-        button1.onClick.AddListener(delegate () { this.CmdCast(1); });
-        button2 = GameObject.Find("Cast2").GetComponent<Button>();
-		button2.onClick.AddListener(delegate () { this.CmdCast(2); });
-        button3 = GameObject.Find("Cast3").GetComponent<Button>();
-		button3.onClick.AddListener(delegate () { this.CmdCast(3); });
-		#endregion 
+	void InitializeButtons(){
+		for (int i = 0; i < 4; i++) {			
+			Button button = GameObject.Find("Cast"+i).GetComponent<Button>();
+			button.name = i.ToString();
+			Image icon = button.GetComponent<Image>();
+			icon.sprite = Resources.Load("SpellIcons/"+spellList[i],typeof(Sprite))as Sprite;
+			button.onClick.AddListener(delegate () { this.CmdCast( int.Parse(button.name)); });
+			Debug.Log (spellList [i]);
+			buttonList[i] = button;
+		}
 	}
 
 	void OnDisable()
 	{
 		GameManager.UnRegisterPlayer(transform.name);
+		Destroy(gameObject);
 	}
+
 
     void Update ()
     {
-        if (!isLocalPlayer)
-        {
-            return;
-        }
-
-        Move();
+		if (!isLocalPlayer)
+		{
+			return;
+		}
+		Move(); 
 		checkBuffs ();
+		UpdateCooldowns ();
     }
-
-	public void CmdCastTest(string theString){
-		Debug.Log(theString);
-	}
 
     public void Move()
     {		
-		
         moveInput = joystick.getInput();
         moveVelocity = moveInput * moveSpeed;
-        playerRigidBody.velocity = moveVelocity;
+		GetComponent<Rigidbody>().velocity = moveVelocity;
         //make the player look at the right direction
         transform.LookAt(transform.position + 100 * moveInput);
     }
-
-
-
+		
     [Command]
     public void CmdCast(int spellNumber)
     {
-        if (spellCooldown[spellNumber]== 0)
+		Debug.Log (spellList [spellNumber]);
+        if ( Time.time - spellLastCast[spellNumber] >= spellCooldown[spellNumber]|| spellCooldown[spellNumber] == 0)
         {
-			Debug.Log("Casting spell");
-			Object[] test = Resources.LoadAll("");
-            GameObject spellPrefab = Resources.Load(spellList[spellNumber], typeof(GameObject)) as GameObject;
-            var spell = (GameObject)Instantiate(spellPrefab, spawnPoint.position, spawnPoint.rotation);
-            NetworkServer.Spawn(spell);
+            GameObject spellPrefab = Resources.Load("Spells/"+spellList[spellNumber], typeof(GameObject)) as GameObject;
+			GameObject spell = (GameObject)Instantiate(spellPrefab, spawnPoint.position, spawnPoint.rotation);
+//			spellClass.Init();
+//			SpellModifier.ModifySpell(spellClass,gameObject,damageMultiplier,projectileSpeedMultiplier,radiusMultiplier,knockbackModifier);
+//			spellClass.Damage = 2;
+//			Debug.Log (spellClass.Damage);
+
+
+			NetworkServer.Spawn(spell);
+			ISpell spellClass = spell.GetComponent<ISpell>();
+			if(spellCooldown[spellNumber] == 0 )
+				spellCooldown[spellNumber] = spellClass.Cooldown;
+			// RpcInitializeSpellOnClient(spell,spellNumber);
+			spellLastCast [spellNumber] = Time.time;
         }
     }
 
+	// [ClientRpc]
+	// // Ensures that all clients initialize the spell as well
+	// void RpcInitializeSpellOnClient(GameObject spell,int spellNumber){
+	// 	ISpell spellClass = spell.GetComponent<ISpell>();
+	// 	spellClass.Init();
+	// 	SpellModifier.ModifySpell(spellClass,gameObject,damageMultiplier,projectileSpeedMultiplier,radiusMultiplier,knockbackModifier);
+	// 	if(spellCooldown[spellNumber] == 0 )
+	// 	spellCooldown[spellNumber] = spellClass.Cooldown;
+	// }
+
+	void UpdateCooldowns(){
+		for (int i = 0; i < 4; i++) {
+			Image cooldownFader = buttonList[i].GetComponentInChildren<Image>();
+			float timeElapsed = Time.time - spellLastCast[i];
+			cooldownFader.fillAmount = timeElapsed >= spellCooldown[i] ? 0:timeElapsed/spellCooldown[i];
+		}
+	}
 
 	public void Heal(float heal){
 		hb.CurrentHealth += heal;
@@ -142,7 +165,7 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
-
+	// If I have a fixed number of buffs, then I can just use a hashmap and check if the buff timer is active. This will speed things up.
 	[ClientRpc]	
 	public void RpcSwift(){
 		SwiftBuff sb = new SwiftBuff(moveSpeed,rotationSpeed);
@@ -165,6 +188,7 @@ public class Player : NetworkBehaviour {
 		}
 
 	}
+
 	[ClientRpc]
 	public void RpcChilled(float value){
 		Debug.Log ("Chilled");
@@ -188,7 +212,18 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
+	[ClientRpc]
+	public void RpcExplosionKnockback(Vector3 explosionPoint, float explosionForce, float radius ){
+		Debug.Assert (explosionForce != null);
+		Vector3 direction = (transform.position - explosionPoint);
+		GetComponent<Rigidbody> ().velocity = ((1/Vector3.Distance(transform.position,explosionPoint))*direction.normalized * explosionForce);
+	}
 
+	[ClientRpc]
+	public void RpcKnockback(Vector3 direction, float force){
+		Debug.Log ("Knockback");
+		GetComponent<Rigidbody> ().velocity = (direction * force);
+	}
 	// Checks and updates buffs on the user. 
 	// To prevent
 	public void checkBuffs(){

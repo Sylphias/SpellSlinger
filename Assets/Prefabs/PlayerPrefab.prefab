@@ -884,7 +884,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1169471950106898}
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: -0.12050142, y: 1.6696055, z: 0.000039252456}
+  m_LocalPosition: {x: -0.12050142, y: -0.23, z: 0.000039252456}
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
   m_Children:
   - {fileID: 4043746762442882}
@@ -899,7 +899,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1687039173560348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4033742227793898}
@@ -1081,7 +1081,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1173579773062898}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 4.07}
+  m_LocalPosition: {x: 0, y: 0.79, z: 4.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4033742227793898}
@@ -1526,6 +1526,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33129694963038888
 MeshFilter:
@@ -1543,7 +1544,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1574,8 +1575,8 @@ Animation:
   - {fileID: 7400024, guid: 013ee0a8b56bacd44b928eab033163af, type: 3}
   - {fileID: 7400026, guid: 013ee0a8b56bacd44b928eab033163af, type: 3}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 1
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
   m_CullingType: 1
 --- !u!114 &114030119831690608
 MonoBehaviour:
@@ -1716,13 +1717,7 @@ MonoBehaviour:
   - Iceball
   - Earthwall
   - Debuff
-  spellCooldown:
-  - 0
-  - 0
-  - 0
-  - 0
   spawnPoint: {fileID: 4336889038356644}
-  joystick: {fileID: 0}
 --- !u!114 &114967623478114274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1740,9 +1735,10 @@ MonoBehaviour:
   m_RotationSyncCompression: 2
   m_SyncSpin: 0
   m_MovementTheshold: 0.0001
-  m_SnapThreshold: 1000
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 100000
   m_InterpolateRotation: 10
-  m_InterpolateMovement: 1
+  m_InterpolateMovement: 0.9
 --- !u!136 &136792330271992754
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1752,7 +1748,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.883453
+  m_Radius: 2.3
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2.5, z: 0}
@@ -1786,6 +1782,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
@@ -1857,7 +1854,7 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1046359413648362}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -1866,6 +1863,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

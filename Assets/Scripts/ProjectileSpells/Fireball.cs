@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 
 namespace Spells{
@@ -9,15 +10,19 @@ namespace Spells{
 		private ContactPoint point;
 		private GameObject impactPrefab;
 
-		//private float duration, radius, damage, projectileSpeed, explosionForce;
 
-		void Start () {
+		public override void Init(){
+			Debug.Log ("Initialized");
 			Damage = 10;
-			ProjectileSpeed = 7;
-			ExplosionForce = 100;
+			ProjectileSpeed = 20;
+			ExplosionForce = 200;
 			Duration = 5;
 			Radius = 10;
-			impactPrefab = Resources.Load ("FireImpactMega", typeof(GameObject))as GameObject;
+			Cooldown = 2;
+		}
+			
+		void Start () {
+			impactPrefab = Resources.Load ("Spells/FireImpactMega", typeof(GameObject))as GameObject;
 			Destroy (gameObject, Duration);
 		}
 
@@ -28,13 +33,10 @@ namespace Spells{
 
 		void OnDestroy(){
 			GameObject go = (GameObject)Instantiate (impactPrefab, gameObject.transform.position, gameObject.transform.rotation);
-			Vector3 explosionPoint;
-			explosionPoint = gameObject.transform.position;
-			Collider[] colliders = Physics.OverlapSphere (explosionPoint,Radius);
+			Collider[] colliders = Physics.OverlapSphere (gameObject.transform.position,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
 			messages.Add ("RpcTakeDamage", Damage);
-			messages.Add ("RpcChilled", 0.2f);
-			explosionScan (messages, colliders, explosionPoint);
+			ExplosionUtilities.ExplosionScan (this,messages, colliders,gameObject.transform.position);
 			Destroy (go, 1);
 		}
 
