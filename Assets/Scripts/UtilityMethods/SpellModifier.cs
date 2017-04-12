@@ -10,9 +10,12 @@ namespace Spells
 			
 			switch (spell.GetSpellType) {
 			case "projectile":
-				ProjectileSpell pSpell = spell as ProjectileSpell;	
-				pSpell.Damage *= damageModifier;
-				pSpell.ProjectileSpeed *= projectileSpeedModifier;
+				Debug.Log ("Modifying Spells");
+				ProjectileSpell pSpell = spell as ProjectileSpell;
+				Debug.Log ((int)pSpell.Damage * (int)damageModifier);
+
+				pSpell.Damage = (int)pSpell.Damage*(int)damageModifier;
+				pSpell.ProjectileSpeed = pSpell.ProjectileSpeed*projectileSpeedModifier;
 				pSpell.Radius *= radiusModifier;
 				pSpell.ExplosionForce *= forceModifier;
 				break;

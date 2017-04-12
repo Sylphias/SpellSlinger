@@ -13,7 +13,6 @@ namespace Spells{
 			this.oldSpeedValue = speed;
 			this.oldRotationValue = rotation;
 		}
-
 		public FrostDebuff(float speed,float rotation){
 			finishTime = Time.time + 5.0f; // Adjust the slow timing
 			tickTime = 0;
@@ -21,10 +20,13 @@ namespace Spells{
 			oldSpeedValue = speed;
 			oldRotationValue = rotation;
 		}
-		public string Type {
-			get{ return "chilled"; }
+		public float ComparableValue{
+			get{return speedMultiplier ;}
 		}
-
+		public string Type {
+			get{ return "FrostDebuff"; }
+		}
+		public float TickTime{ get; set;}
 		public float FinishTime{
 			get{ return finishTime; }
 			set{ finishTime = value; }
@@ -40,11 +42,6 @@ namespace Spells{
 			}
 		}
 
-		public float TickTime{
-			get{ return tickTime; }
-			set{ tickTime = value; }
-		}
-
 		public float SpeedMultiplier {
 			get{ return speedMultiplier; }
 			set{ speedMultiplier = value; }
@@ -53,14 +50,14 @@ namespace Spells{
 		public void Reset(Component victim){
 			if (victim as Player) {
 				Player ps = (Player)victim;
-				ps.MoveSpeed = oldSpeedValue;
+				ps.MovementMultiplier = oldSpeedValue;
 			}
 		}
 			
 		public void Apply(Component victim){
 			if (victim as Player) {
 				Player ps = (Player)victim;
-				ps.MoveSpeed= oldSpeedValue*speedMultiplier;
+				ps.MovementMultiplier= speedMultiplier;
 			}
 		}
 			

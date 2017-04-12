@@ -24,16 +24,17 @@ namespace Spells
 		void Awake(){
 			Init();
 		}
+
+		
 		public string GetSpellType{
 			get{return "projectile";}
 		}
-
-		public float Duration{get;set;}
-		public float Cooldown{get;set;}
-		public float Damage{get;set;}
-		public float Radius{get;set;}
-		public float ExplosionForce{get;set;}
-		public float ProjectileSpeed{get;set;}
+		public float ExplosionForce{get{return explosionForce;}set{explosionForce = value;}}
+		public float Duration{get{return duration;}set{duration = value;}}
+		public float Cooldown{get{return cooldown;}set{cooldown = value;}}
+		public float Damage{get{return damage;}set{damage = value;}}
+		public float Radius{get{return radius;}set{radius = value;}}
+		public float ProjectileSpeed{get{return projectileSpeed;}set{projectileSpeed = value;}}
 
 		public abstract void Init ();
 

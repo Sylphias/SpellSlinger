@@ -48,7 +48,6 @@
   <ItemGroup>
      <Compile Include="Assets\Arena\Example\ImageEffects\Scripts\ScreenSpaceAmbientOcclusion.cs" />
      <Compile Include="Assets\Arena\Example\ParticleSystems\Scripts\ParticleSystemMultiplier.cs" />
-     <Compile Include="Assets\GameManager.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\ButtonScript.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\DragMouseOrbit.cs" />
      <Compile Include="Assets\Models\MagicArsenal\InteractiveDemo\Scripts\FireProjectile.cs" />
@@ -64,11 +63,13 @@
      <Compile Include="Assets\Models\MagicArsenal\Scripts\lightScriptLong.cs" />
      <Compile Include="Assets\Scripts\Barriers\BarrierSpells.cs" />
      <Compile Include="Assets\Scripts\Barriers\EarthWall.cs" />
+     <Compile Include="Assets\Scripts\BuffDebuffs\BurnDebuff.cs" />
      <Compile Include="Assets\Scripts\BuffDebuffs\FrostDebuff.cs" />
      <Compile Include="Assets\Scripts\BuffDebuffs\SpeedBuff.cs" />
      <Compile Include="Assets\Scripts\BuffSpells\BuffSpells.cs" />
      <Compile Include="Assets\Scripts\BuffSpells\Swiftness.cs" />
      <Compile Include="Assets\Scripts\FaceCameraScript.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\HealthbarController.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IBarrier.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IBuffSpell.cs" />
@@ -78,12 +79,25 @@
      <Compile Include="Assets\Scripts\Interfaces\IProjectile.cs" />
      <Compile Include="Assets\Scripts\Interfaces\ISpell.cs" />
      <Compile Include="Assets\Scripts\Interfaces\ISpellShields.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\DataTranslator.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\Player.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\PlayerMotor.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\PlayerScore.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\PlayerScoreBoardItem.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\PlayerSetup.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\PlayerStats.cs" />
+     <Compile Include="Assets\Scripts\JoelScripts\Scoreboard.cs" />
      <Compile Include="Assets\Scripts\Networking\BuffableStruct.cs" />
      <Compile Include="Assets\Scripts\Networking\PlayerMessage.cs" />
      <Compile Include="Assets\Scripts\Networking\Player_SyncPosition.cs" />
+     <Compile Include="Assets\Scripts\Novas\FireNova.cs" />
      <Compile Include="Assets\Scripts\Novas\FrostNova.cs" />
      <Compile Include="Assets\Scripts\Novas\NovaSpells.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\PlayerHit.cs" />
      <Compile Include="Assets\Scripts\ProjectileSpells\Fireball.cs" />
      <Compile Include="Assets\Scripts\ProjectileSpells\IceBall.cs" />
      <Compile Include="Assets\Scripts\ProjectileSpells\ProjectileSpell.cs" />

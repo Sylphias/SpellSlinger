@@ -6,7 +6,13 @@ namespace Spells
 {
 	public abstract class BarrierSpells:NetworkBehaviour,IBarrier,ISpell
 	{
-		private float duration, cooldown, damage;
+		[SyncVar]
+		private float duration;
+		[SyncVar]
+		private float cooldown;
+		[SyncVar]
+		private float damage;
+		
 		private int charges; 
 
 		public string GetSpellType{
@@ -18,10 +24,11 @@ namespace Spells
 			Init();
 		}
 		
-		public float Cooldown{ get; set;}
-		public float Damage{ get; set;}
-		public float Duration{ get; set;}
-		public int Charges{ get; set;}
+		public float Duration{get{return duration;}set{duration = value;}}
+		public float Cooldown{get{return cooldown;}set{cooldown = value;}}
+		public float Damage{get{return damage;}set{damage = value;}}
+
+		public int Charges{ get{return charges;} set{charges = value;}}
 
 		public abstract void Init ();
 

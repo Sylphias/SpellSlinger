@@ -96,6 +96,8 @@ GameObject:
   - component: {fileID: 114040916312985578}
   - component: {fileID: 114987802735036828}
   - component: {fileID: 114752629395949818}
+  - component: {fileID: 54773206433537020}
+  - component: {fileID: 135268011079780298}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Untagged
@@ -12485,6 +12487,21 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100010}
   m_IsPrefabParent: 1
+--- !u!54 &54773206433537020
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!114 &114040916312985578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12499,24 +12516,24 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 0
-    i1: 0
-    i2: 0
-    i3: 0
-    i4: 0
-    i5: 0
-    i6: 0
-    i7: 0
-    i8: 0
-    i9: 0
-    i10: 0
-    i11: 0
-    i12: 0
-    i13: 0
-    i14: 0
-    i15: 0
+    i0: 179
+    i1: 47
+    i2: 131
+    i3: 94
+    i4: 101
+    i5: 142
+    i6: 250
+    i7: 20
+    i8: 25
+    i9: 173
+    i10: 10
+    i11: 230
+    i12: 176
+    i13: 51
+    i14: 184
+    i15: 31
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114752629395949818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12549,3 +12566,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb2932fb682f45a797c8fdbe460c7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &135268011079780298
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

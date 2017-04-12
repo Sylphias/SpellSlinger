@@ -12,7 +12,7 @@ namespace Spells{
 
 
 		public override void Init(){
-			Debug.Log ("Initialized");
+			Debug.Log ("Fireball Initialized");
 			Damage = 10;
 			ProjectileSpeed = 20;
 			ExplosionForce = 200;
@@ -27,9 +27,9 @@ namespace Spells{
 		}
 
 		void OnCollisionEnter(Collision col){
-				point = col.contacts [0];
-				Destroy (gameObject);
-			}
+			point = col.contacts [0];
+			Destroy (gameObject);
+		}
 
 		void OnDestroy(){
 			GameObject go = (GameObject)Instantiate (impactPrefab, gameObject.transform.position, gameObject.transform.rotation);

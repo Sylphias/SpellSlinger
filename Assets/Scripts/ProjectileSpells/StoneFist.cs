@@ -39,15 +39,13 @@ namespace Spells
 		}
 			
 		void Start () {
-
 			impactPrefab = Resources.Load ("Spells/EarthImpactMega", typeof(GameObject))as GameObject;
 			Destroy (gameObject,Duration);
 		}
 
-
 		void OnCollisionEnter(Collision col){
 			if(col.collider.tag =="Player"){
-				Player playerObj = col.collider.GetComponent<Player>();
+				PlayerHit playerObj = col.collider.GetComponent<PlayerHit>();
 				playerObj.RpcTakeDamage(Damage);
 				playerObj.RpcKnockback(transform.forward,KnockbackForce);
 			}

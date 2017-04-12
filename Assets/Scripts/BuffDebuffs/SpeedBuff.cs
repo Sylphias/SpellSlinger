@@ -7,11 +7,10 @@ namespace Spells
 	public class SwiftBuff:IBuffable
 	{
 		private bool isFinished;
-		private float finishTime;
 		private float tickTime, speedMultiplier, oldSpeedValue, oldRotationValue;
 
 		public SwiftBuff (float duration,float tickTime,float speedMult, float speed, float rotation){
-			finishTime =Time.time + 5;
+			FinishTime =Time.time + 10;
 			speedMultiplier = speedMult;
 			this.tickTime = tickTime;
 			this.oldSpeedValue = speed;
@@ -19,34 +18,30 @@ namespace Spells
 		}
 
 		public SwiftBuff(float speed,float rotation){
-			finishTime = Time.time + 5.0f; // Adjust the slow timing
+			FinishTime = Time.time + 10.0f; // Adjust the slow timing
 			tickTime = 0;
 			speedMultiplier = 2f;
 			oldSpeedValue = speed;
 			oldRotationValue = rotation;
 		}
 		public string Type {
-			get{ return "swiftness"; }
+			get{ return "SpeedBuff"; }
 		}
 
-		public float FinishTime{
-			get{ return finishTime; }
-			set{ finishTime = value; }
+		public float ComparableValue{
+			get{return speedMultiplier ;}
 		}
+		public float TickTime{get;set;}
+		public float FinishTime{get;set;}
 
 		public bool Finished{
 			get{
-				if (finishTime < Time.time) {
+				if (FinishTime < Time.time) {
 					return true;
 				} else {
 					return false;
 				}
 			}
-		}
-
-		public float TickTime{
-			get{ return tickTime; }
-			set{ tickTime = value; }
 		}
 
 		public float SpeedMultiplier {
@@ -57,16 +52,15 @@ namespace Spells
 		public void Reset(Component victim){
 			if (victim as Player) {
 				Player ps = (Player)victim;
-				ps.MoveSpeed = oldSpeedValue;
-				ps.RotationSpeed = oldRotationValue;
+				ps.MovementMultiplier = oldSpeedValue;
 			}
 		}
 
 		public void Apply(Component victim){
 			if (victim as Player) {
 				Player ps = (Player)victim;
-				ps.MoveSpeed= oldSpeedValue*speedMultiplier;
-				ps.RotationSpeed = oldRotationValue*speedMultiplier;
+				ps.MovementMultiplier= oldSpeedValue*speedMultiplier;
+				Debug.Log(ps.MovementMultiplier);
 			}
 		}
 	}
