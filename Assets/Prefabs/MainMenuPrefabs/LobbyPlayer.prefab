@@ -209,12 +209,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded4ad80dfa62e64c9eba13572558923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowLobbyGUI: 1
+  ShowLobbyGUI: 0
+  startGame: 0
   nameLabel: {fileID: 114965549102048258}
   colorButton: {fileID: 114771885002585332}
   readyButton: {fileID: 114652049803575136}
   kickButton: {fileID: 114654296433681358}
-  startButton: {fileID: 0}
 --- !u!114 &114192559595877478
 MonoBehaviour:
   m_ObjectHideFlags: 1

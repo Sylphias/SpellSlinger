@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
@@ -28,11 +29,18 @@ public class LobbyManager: NetworkLobbyManager {
 
 	public PlayerData playerData;
 
+	public RectTransform playerListParent;
+
 	bool host = false;
 	ulong currentNetworkId;
 
 	void Start(){
 		Debug.Log ("Network Lobby Manager is running");
+		Setup ();
+	}
+
+	public void Setup(){
+		Debug.Log ("Setting up");
 		NetworkManager.singleton.StartMatchMaker();
 		playerData = GameObject.Find ("Player Data").GetComponent<PlayerData> ();
 		hostButton.onClick.AddListener (() => Host());
@@ -96,9 +104,10 @@ public class LobbyManager: NetworkLobbyManager {
 	public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo){
 		if (success){
 			Debug.Log ("Room is successfully created"); 
+			StartHost (matchInfo);
 			NetworkServer.Listen (matchInfo, 9999);
 			currentNetworkId = (System.UInt64)matchInfo.networkId;
-			StartHost (matchInfo);
+
 		}
 		else
 			Debug.LogError ("Room failed to be created");
@@ -119,6 +128,7 @@ public class LobbyManager: NetworkLobbyManager {
 
 	public override void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches){
 		if (success) {
+			NetworkManager.singleton.matches = matches;
 			if (matches.Count >= 1) {
 				Debug.Log ("OnMatchList success: Populating list");
 				GetComponent<RoomOption> ().PopulateList (matches);
@@ -159,16 +169,12 @@ public class LobbyManager: NetworkLobbyManager {
 		if (success) {
 			Debug.Log ("OnMatchJoined success");
 			StartClient (matchInfo);
+			joinPanel.SetActive (false);
+			lobbyPanel.SetActive (true);
 			currentNetworkId = (System.UInt64)matchInfo.networkId;
 		} else {
 			Debug.Log ("OnMatchJoined fail");
 		}
-	}
-		
-	public override void OnStartClient(NetworkClient client){
-		//Debug.Log ("OnStartClient is called" + NetworkManager.singleton.matchName);
-		hostPanel.SetActive (false);
-		lobbyPanel.SetActive (true);
 	}
 		
 	//Drop Match
@@ -191,10 +197,11 @@ public class LobbyManager: NetworkLobbyManager {
 	}
 
 	public override void OnStopHost(){
-		base.OnStopHost ();
 		Debug.Log ("Stopped Host");
 		lobbyPanel.SetActive (false);
 		menuPanel.SetActive (true);
+		Setup ();
+		//SceneManager.LoadScene ("Menu");
 	}
 
 	public override void OnStopClient(){
@@ -202,27 +209,40 @@ public class LobbyManager: NetworkLobbyManager {
 		Debug.Log ("Stopped Client");
 		lobbyPanel.SetActive (false);
 		menuPanel.SetActive (true);
+		Setup ();
+		//SceneManager.LoadScene ("Menu");
 	}
 				
-	//Transition from Lobby to Game the transfer of the data NOW!
+	// EDIT CODE HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//Transition from Lobby Player to Game Player!
 	public override bool OnLobbyServerSceneLoadedForPlayer(GameObject lobbyPlayer, GameObject gamePlayer){
 		Debug.Log ("Scene Loaded");
 
 		LobbyPlayer source = lobbyPlayer.GetComponent<LobbyPlayer>();
-		//PlayerScript player = gamePlayer.GetComponent<PlayerScript>();
+		Player player = gamePlayer.GetComponent<Player>();
 
 		string tobepassed = source.UserName;
 
 		Debug.Log (tobepassed);
 
-		if (source != null ) {
+		if (source != null && player != null ) {
 			Debug.Log ("Should be able to do transfer");
 			return true;
 		} else {
-			Debug.Log ("Null players detected");
+			Debug.Log ("Null players detected for" + tobepassed);
 			return false;
 		}
-
+	}
+				
+	public override void OnLobbyServerPlayersReady ()
+	{
+		Debug.Log ("OnLobbyServerPlayerReady");
+		
+		LobbyPlayer[] playerList = playerListParent.GetComponentsInChildren<LobbyPlayer> ();
+		foreach (LobbyPlayer player in playerList) {
+			player.startGame = true;
+		}
+		base.OnLobbyServerPlayersReady ();
 	}
 		
 	void PopMessage(string message){
