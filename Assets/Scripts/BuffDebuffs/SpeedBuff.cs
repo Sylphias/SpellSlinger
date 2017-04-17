@@ -8,6 +8,7 @@ namespace Spells
 	{
 		private bool isFinished;
 		private float tickTime, speedMultiplier, oldSpeedValue, oldRotationValue;
+		public float TimeElapsed{get;set;}
 
 		public SwiftBuff (float duration,float tickTime,float speedMult, float speed, float rotation){
 			FinishTime =Time.time + 10;
@@ -20,9 +21,12 @@ namespace Spells
 		public SwiftBuff(float speed,float rotation){
 			FinishTime = Time.time + 10.0f; // Adjust the slow timing
 			tickTime = 0;
+			TimeElapsed = 0;
 			speedMultiplier = 2f;
 			oldSpeedValue = speed;
 			oldRotationValue = rotation;
+
+
 		}
 		public string Type {
 			get{ return "SpeedBuff"; }
@@ -49,19 +53,17 @@ namespace Spells
 			set{ speedMultiplier = value; }
 		}
 
-		public void Reset(Component victim){
-			if (victim as Player) {
-				Player ps = (Player)victim;
-				ps.MovementMultiplier = oldSpeedValue;
-			}
+		public void Reset(GameObject victim)
+		{
+			victim.GetComponent<PlayerController>().CmdUpdateSpeed (oldSpeedValue);
 		}
 
-		public void Apply(Component victim){
-			if (victim as Player) {
-				Player ps = (Player)victim;
-				ps.MovementMultiplier= oldSpeedValue*speedMultiplier;
-				Debug.Log(ps.MovementMultiplier);
-			}
+		public void Apply(GameObject victim)
+		{
+
+			PlayerController ps = victim.GetComponent<PlayerController>();
+			ps.CmdUpdateSpeed (oldSpeedValue * speedMultiplier);
+
 		}
 	}
 }

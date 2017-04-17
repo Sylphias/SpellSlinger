@@ -5,12 +5,14 @@ namespace Spells{
 	{
 		private bool isFinished;
 		public float TickTime{get;set;}
+
 		public string Type {
 			get{ return "BurnDebuff"; }
 		}
 		public float ComparableValue{
 			get{return DamagePerSecond ;}
 		}
+		public float TimeElapsed{ get; set; }
 		public float DamagePerSecond{get;set;}
 		public float FinishTime{get;set;}
 		public bool Finished{
@@ -23,20 +25,21 @@ namespace Spells{
 			}
 		}
 		public BurnDebuff(float damagePerSecond){
-			FinishTime = Time.time + 5.0f; // Adjust the slow timing
+			FinishTime = Time.time + 10.0f;
 			DamagePerSecond = damagePerSecond;
 			TickTime = 1;
+			TimeElapsed = 0;
+
 		}
 		//Resetting Burn does nothing
-		public void Reset(Component victim){
+		public void Reset(GameObject victim){
 			return;
 		}
 
-		public void Apply(Component victim){
-			if (victim as Player) {
-				Player ps = (Player)victim;
-				ps.TakeDamage(DamagePerSecond);
-			}
+		public void Apply(GameObject victim){
+			Debug.Log ("Applying Burn");
+			HealthbarController playerHealth = (HealthbarController)victim.GetComponent<HealthbarController>();
+			playerHealth.CmdTakeDamage(DamagePerSecond);
 		}
 
 	}

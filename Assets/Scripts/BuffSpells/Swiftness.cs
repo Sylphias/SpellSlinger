@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 namespace Spells{
-	public class Swiftness : BuffSpell {
+	public class Swiftness : BuffSpell,ISpell {
 		[SyncVar]
 		private float speedModifier;
 

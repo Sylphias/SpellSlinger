@@ -19,10 +19,11 @@ namespace Spells
 
 		public override void Init ()
 		{
+			DoT = 5;
 			Damage = 10;
 			ProjectileSpeed = 5;
-			ExplosionForce = 100;
-			KnockbackForce = 300;
+			ExplosionForce = 30;
+			KnockbackForce = 20;
 			Duration = 5;
 			Radius = 10;
 		}
@@ -46,8 +47,10 @@ namespace Spells
 		void OnCollisionEnter(Collision col){
 			if(col.collider.tag =="Player"){
 				PlayerHit playerObj = col.collider.GetComponent<PlayerHit>();
-				playerObj.RpcTakeDamage(Damage);
-				playerObj.RpcKnockback(transform.forward,KnockbackForce);
+				Dictionary<string,float> messages = new Dictionary<string,float> ();
+				messages.Add ("TakeDamage", DoT);
+				playerObj.OnHit (messages);
+				playerObj.ApplyKnockback(transform.forward,KnockbackForce);
 			}
 			else{
 				Destroy(gameObject);
@@ -56,7 +59,7 @@ namespace Spells
 
 		void OnCollisionStay(Collision col){
 			if(col.collider.tag =="Player"){
-				col.collider.SendMessage ("RpcTakeDamage", 10);
+				col.collider.SendMessage ("TakeDamage", 10);
 				col.collider.GetComponent<Rigidbody> ().AddForce (transform.forward*10,ForceMode.Impulse);
 			}
 		}
@@ -65,7 +68,7 @@ namespace Spells
 			GameObject go = (GameObject)Instantiate (impactPrefab, gameObject.transform.position, gameObject.transform.rotation);
 			Collider[] colliders = Physics.OverlapSphere (gameObject.transform.position,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
-			messages.Add ("RpcTakeDamage", Damage);
+			messages.Add ("TakeDamage", Damage);
 			ExplosionUtilities.ExplosionScan (this,messages,colliders, gameObject.transform.position);
 			Destroy (go, 1);
 		}

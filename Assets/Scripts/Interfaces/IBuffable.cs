@@ -8,8 +8,9 @@ public interface IBuffable
 		string Type{ get; }
 		float ComparableValue{get;}
 		float TickTime{get;set;}
-		void Apply(Component victim);
-		void Reset(Component victim); // Resets player to original state before debuff/buff
+		float TimeElapsed{get;set;}
+		void Apply(GameObject victim);
+		void Reset(GameObject victim); // Resets player to original state before debuff/buff
 		bool Finished { get; }
 		float FinishTime{ get; set;}
 	}

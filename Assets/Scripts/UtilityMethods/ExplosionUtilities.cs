@@ -20,7 +20,7 @@ namespace Spells
 					Debug.DrawLine (playerBody.position, explosionPoint, Color.red,4);
 					if (rch.collider.tag == "Player" && x ) { 
 							playerHit.ApplyExplosiveKnockback (explosionPoint,spell.ExplosionForce,spell.Radius);
-                            playerHit.OnHit( messages);
+                            playerHit.OnHit(messages);
                     }
                 }
             }

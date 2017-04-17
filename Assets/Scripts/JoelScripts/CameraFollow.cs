@@ -1,20 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
 
-public class CameraFollow : MonoBehaviour {
+// public class CameraFollow : MonoBehaviour {
 
-    public GameObject player;
+//     public GameObject player;
 
-    private Vector3 offset;
+//     private Vector3 offset;
 
-    private void Start()
-    {
-        offset = transform.position - player.transform.position;
-    }
+//     private void Start()
+//     {
+//         offset = transform.position - player.transform.position;
+//     }
 
-    private void Update()
-    {
-        transform.position = player.transform.position + offset;
-    }
-}
+//     private void Update()
+//     {
+//         transform.position = player.transform.position + offset;
+//     }
+// }

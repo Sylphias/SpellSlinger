@@ -12,10 +12,9 @@ namespace Spells{
 
 
 		public override void Init(){
-			Debug.Log ("Fireball Initialized");
 			Damage = 10;
 			ProjectileSpeed = 20;
-			ExplosionForce = 200;
+			ExplosionForce = 50;
 			Duration = 5;
 			Radius = 10;
 			Cooldown = 2;
@@ -35,7 +34,7 @@ namespace Spells{
 			GameObject go = (GameObject)Instantiate (impactPrefab, gameObject.transform.position, gameObject.transform.rotation);
 			Collider[] colliders = Physics.OverlapSphere (gameObject.transform.position,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
-			messages.Add ("RpcTakeDamage", Damage);
+			messages.Add ("TakeDamage", Damage);
 			ExplosionUtilities.ExplosionScan (this,messages, colliders,gameObject.transform.position);
 			Destroy (go, 1);
 		}

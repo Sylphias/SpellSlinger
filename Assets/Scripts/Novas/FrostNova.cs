@@ -19,8 +19,8 @@ namespace Spells
 		void Start () {
 			Collider[] colliders = Physics.OverlapSphere (gameObject.transform.position,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
-			messages.Add ("RpcTakeDamage", Damage);
-			messages.Add ("RpcChilled", 0.2f);
+			messages.Add ("TakeDamage", Damage);
+			messages.Add ("Chilled", 0.2f);
 			ExplosionUtilities.ExplosionScan (this,messages, colliders, gameObject.transform.position,true);
 			Destroy (gameObject,2);
 		}
