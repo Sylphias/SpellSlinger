@@ -10,7 +10,8 @@ class PlayerSpellcasting : NetworkBehaviour,IPlayer
 
     private Player player;
 	public Transform spawnPoint;
-    public string[]spellList;
+	public SyncListString spellList = new SyncListString ();
+
     Button [] buttonList = new Button[4];
     private Animation playerAnimations;
 	float[] spellCooldown = new float[4] { 0, 0, 0, 0 };
@@ -22,20 +23,27 @@ class PlayerSpellcasting : NetworkBehaviour,IPlayer
 	[SyncVar] private float  knockbackMultiplier;
     
 
-
 	public override void OnStartLocalPlayer(){
         if (!isLocalPlayer) return;
 		Init ();
-		if(spellList == null || spellList.Length ==0)
-			spellList = new string[4] { "Iceball", "Firenova", "Fireball", "Stonefist" }; // Temporary till bella integration
-        InitializeButtons();
+		if (spellList == null || spellList.Count == 0)
+			InitializeSpellListIfEmpty ();
+		player = GetComponent<Player>();
+		InitializeButtons();
         InitializeCooldowns();
         playerAnimations = GetComponent<Animation>();
-        player = GetComponent<Player>();
         base.OnStartLocalPlayer();
 	}
 
+	private void InitializeSpellListIfEmpty(){
+		string [] defaultSpellList = new string[4] { "Forcelightning", "Firenova", "Stonefist", "Blink" };
+		foreach (string s in defaultSpellList)
+			spellList.Add (s);
+	}
+
 	void FixedUpdate(){
+		if (!isLocalPlayer)
+			return;
 		UpdateCooldowns();
 	}
 
@@ -53,17 +61,11 @@ class PlayerSpellcasting : NetworkBehaviour,IPlayer
 		knockbackMultiplier = 1;
 	}
 
-	[Client]
-    //This method is for when bella is ready to pass in the string array of spells
-    void InitializeSpellList(string[] spellList){
-        this.spellList = spellList;
-    }
-
 
 	//Set all the player cooldowns
 	[Client]
 	void InitializeCooldowns(){
-		for(int i = 0 ; i< spellList.Length; i ++ ) {
+		for(int i = 0 ; i< spellList.Count; i ++ ) {
 			GameObject spellPrefab = Resources.Load ("Spells/" + spellList[i], typeof(GameObject)) as GameObject;
 			ISpell preInitializedSpell = spellPrefab.GetComponent<ISpell>();
             preInitializedSpell.Init();// Initialize the spell with default values
@@ -74,7 +76,8 @@ class PlayerSpellcasting : NetworkBehaviour,IPlayer
 
     [Client]
 	void InitializeButtons(){
-		for (int i = 0; i < 4; i++) {			
+		if(player.state == "endgameover") return;
+		for (int i = 0; i < 4; i++) {	
 			Button button = GameObject.Find("Cast"+i).GetComponent<Button>();
 			button.name = i.ToString();
 			Image icon = button.GetComponent<Image>();
@@ -87,6 +90,10 @@ class PlayerSpellcasting : NetworkBehaviour,IPlayer
 	void CastSpell(int spellNumber){
         if ( (Time.time - spellLastCast[spellNumber] >= spellCooldown[spellNumber]|| spellCooldown[spellNumber] == 0)&& player.state != "dead")
         {
+			if (player == null)
+				player = GetComponent<Player> ();
+			if (player.state != "alive")
+				return;
 			playerAnimations.CrossFade("Attack");
             Vector3 spellSpawn = ((spellTypes[spellNumber] == "nova" || spellTypes[spellNumber] == "buff")) ?
 transform.position : spawnPoint.position; 
@@ -106,17 +113,18 @@ transform.position : spawnPoint.position;
 
 	[ClientRpc]
 	void RpcInitializeClientSpell(GameObject spell, float castedDamageMultiplier, float castedProjectileSpeedModifier, float castedRadiusMultiplier, float castedKnockbackMultiplier){
-			Debug.Log("Called Client Spell");
 			ISpell spellClass = spell.GetComponent<ISpell>();
 			spellClass.Init();
 			SpellModifier.ModifySpell(spellClass,gameObject,castedDamageMultiplier,castedProjectileSpeedModifier,castedRadiusMultiplier,castedKnockbackMultiplier);
 	}
 
 	void UpdateCooldowns(){
-		for (int i = 0; i < 4; i++) {
-			Image cooldownFader = GameObject.FindWithTag("Cd"+i).GetComponent<Image>();
-			float timeElapsed = Time.time - spellLastCast [i];
-			cooldownFader.fillAmount = timeElapsed >= spellCooldown[i] ? 0:(1-timeElapsed/spellCooldown[i]);
+		if (player.state != "endgameover") {
+			for (int i = 0; i < 4; i++) {
+				Image cooldownFader = GameObject.FindWithTag ("Cd" + i).GetComponent<Image> ();
+				float timeElapsed = Time.time - spellLastCast [i];
+				cooldownFader.fillAmount = timeElapsed >= spellCooldown [i] ? 0 : (1 - timeElapsed / spellCooldown [i]);
+			}
 		}
 	}
 

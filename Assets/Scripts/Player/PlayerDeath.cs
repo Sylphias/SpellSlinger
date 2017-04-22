@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -16,6 +16,8 @@ public class PlayerDeath:NetworkBehaviour
 	private Animation playerAnimations;
     private HealthbarController hb;
 	private System.Random rand;
+	private GameObject gameOverOverlay;
+	public GameObject endGamePrefab;
 	private float oldMovement,oldRotation; 
 	//private GameObject gameOverTint;
 	Player player;
@@ -32,6 +34,8 @@ public class PlayerDeath:NetworkBehaviour
         DeathTimer = 0;
         InvulerabilityTimer = 0;
         rand = new System.Random();
+		gameOverOverlay = GameObject.FindWithTag ("GameOverTint");
+		gameOverOverlay.SetActive (false);
 		base.OnStartLocalPlayer();
 	}
 
@@ -44,9 +48,6 @@ public class PlayerDeath:NetworkBehaviour
                     RespawnSequence();
                 DeathTimer += Time.deltaTime;
                 break;
-            case "endgame":
-                ShowEndGameTitle();
-                break;
             case "gameover":
                 GameOverSequence();
                 break;
@@ -55,14 +56,14 @@ public class PlayerDeath:NetworkBehaviour
                 break;
         }
     }
-
-    void ShowEndGameTitle() {
-	
-	}
-
-	public void DisablePlayer(float deathCount){
-		playerAnimations.CrossFade("Death"+rand.Next(1,3));
-		player.state = deathCount>= 3 ? "gameover":"dead";
+		
+	public void DisablePlayer(){
+		if (!isLocalPlayer)return;
+		player.state = player.Deaths >= 3 ? "gameover":"dead";
+        player.Deaths++;
+		player.BuffList = new List<IBuffable> ();
+		playerAnimations.CrossFade("Death1");
+		CmdSyncDeathAnimation ();
         if (player.state == "gameover")
             GameOverSequence();
         GetComponent<Rigidbody>().isKinematic = true;
@@ -70,69 +71,112 @@ public class PlayerDeath:NetworkBehaviour
 		controller.CmdUpdateLookSensitivity(0);
 	}
 
+	[Command]
+	void CmdSyncDeathAnimation(){
+		RpcClientDeathAnimation ();
+		PlayDeathAnimation ();	
+	}
+
+	[ClientRpc]
+	void RpcClientDeathAnimation(){
+		PlayDeathAnimation ();	
+	}
+
+	void PlayDeathAnimation(){
+		if(playerAnimations ==null)
+			playerAnimations = GetComponent<Animation>();
+		playerAnimations.CrossFade("Death1");
+	}
+
 	void RespawnSequence(){
         Debug.Log("begin respawning");
 		Transform newSpawn = NetworkManager.singleton.GetStartPosition();
 		transform.position = newSpawn.position;
         // Spawn Animation
-        CmdSpawnRespawnAnimations(transform.position,transform.rotation);
-        hb.CurrentHealth = hb.MaxHealth;
+		hb.CmdSetToFullHealth ();
 		// Spawn Bubble animation for 3 seconds
 		DeathTimer = 0;
         player.state = "respawned";
 		GetComponent<Rigidbody>().isKinematic = false;
-		controller.CmdUpdateSpeed(30);
-		controller.CmdUpdateLookSensitivity(3);
+		controller.CmdUpdateSpeed(10);
+		controller.CmdUpdateLookSensitivity(1);
+		if(isLocalPlayer){
+			CmdSpawnRespawnAnimations(newSpawn.position,transform.rotation);
+		}
 	}
+
     [Command]
     void CmdSpawnRespawnAnimations(Vector3 position, Quaternion rotation)
     {
-        GameObject respawnPillar = (GameObject)Instantiate(Resources.Load("Spells/Respawnpillar", typeof(GameObject)) as GameObject, position,rotation);
+        // Spawn the respawn animation. on non-player 
+		GameObject respawnPillar = (GameObject)Instantiate(Resources.Load("Spells/Respawnpillar", typeof(GameObject)) as GameObject, Vector3.zero,rotation);
         NetworkServer.Spawn(respawnPillar);
-        GameObject respawnShield = (GameObject)Instantiate(Resources.Load("Spells/Respawnshield", typeof(GameObject)) as GameObject, position, rotation);
-        NetworkServer.Spawn(respawnShield);
-        RpcInstantiateRespawnAnimations(respawnPillar, respawnShield);
+		GameObject respawnShield = (GameObject)Instantiate(Resources.Load("Spells/Respawnshield", typeof(GameObject)) as GameObject, Vector3.zero, rotation);
+		NetworkServer.Spawn(respawnShield);
+		RpcInstantiateRespawnAnimations(respawnPillar, respawnShield, position);
     }
 
     [ClientRpc]
-    void RpcInstantiateRespawnAnimations(GameObject respawnPillar, GameObject respawnShield)
+	void RpcInstantiateRespawnAnimations(GameObject respawnPillar, GameObject respawnShield,Vector3 position)
     {
         respawnPillar.transform.parent = gameObject.transform;
         respawnShield.transform.parent = gameObject.transform;
-        respawnShield.transform.Rotate(-90, 0, 0);
+		respawnPillar.GetComponent<RespawnGameObjects> ().player = gameObject;
+		respawnShield.GetComponent<RespawnGameObjects> ().player = gameObject;
+		respawnShield.transform.Rotate(-90, 0, 0);
     }
 
-    void GameOverSequence(){
-		Debug.Log ("game over");
-		GameObject.FindWithTag("GameOverTint").GetComponent<GameObject>().SetActive (true);
-		player.SpectatorMode();
-		GameManager.DeregisterPlayer(transform.name);
-        //Add Notification that it is game over for the player.
-		if (GameManager.GetAllPlayers ().Length <= 1)
-			CmdEndGame ();
-		else {
-			
-		}
-	}	
 
-	[Command]
-	void CmdEndGame(){
+    void GameOverSequence(){
+		player.state = "spectating";
+		gameOverOverlay.SetActive (true);
+		player.SpectatorMode();
+		CmdReducePlayerCount ();
+
 		
+	}	
+	[Command]
+	void CmdReducePlayerCount(){
+		GameManager.KillPlayer();
+		if (GameManager.GetNumberOfPlayersAlive() <= 1)
+			EndGame ();
+	}
+
+	void EndGame(){
+		foreach(GameObject player in GameObject.FindGameObjectsWithTag("Player")){
+			player.GetComponent<PlayerDeath>().RpcShowEndGame ();
+		}
 	}
 
 	[ClientRpc]
 	void RpcShowEndGame(){
-		if(!isLocalPlayer)
+		if (!isLocalPlayer)
 			return;
-		player.state = "endgame";
-
+		ShowEndGame ();
 	}
 
-	void ExitGame(){
- 		//NetworkManager.singleton.StopHost();
+	void ShowEndGame(){
+		Debug.Log ("Show end PASS for " + gameObject.transform.name);
+		GameObject endSplash;
+		string message;
+		Debug.Log (player.state);
+		if (player.state == "alive"){
+			gameOverOverlay.SetActive (true);
+			message = "You Win!";
+			Debug.Log ("win here");
+		} else {
+			message = "You Lose!";
+			Debug.Log ("lose here");
+		}
+		player.state = "endgameover";
+		endSplash = (GameObject)Instantiate (endGamePrefab);
+		endSplash.GetComponent<Text> ().text = message;
+		endSplash.transform.SetParent (gameOverOverlay.GetComponent<RectTransform>(), false);
+		
+
+		StartCoroutine(GoBackToLobby());
 
 	}
-
 
 	void Invulnerable(){
 		if(InvulerabilityTimer > 5  && player.state == "respawned"){
@@ -143,6 +187,17 @@ public class PlayerDeath:NetworkBehaviour
 			InvulerabilityTimer +=Time.deltaTime;
 		}
 		
+	}
+
+	IEnumerator GoBackToLobby(){
+		Debug.Log ("Going back to lobby");
+		yield return new WaitForSecondsRealtime (5);
+
+		//last resort
+		GameObject.FindGameObjectWithTag ("LobbyManager").GetComponent<LobbyManager> ().DropMatch ();
+
+		//GameObject.FindGameObjectWithTag ("LobbyManager").GetComponent<LobbyManager> ().SendReturnToLobby ();
+		Destroy (this);
 	}
 }
 

@@ -25,15 +25,13 @@ public class SpellOption : MonoBehaviour {
 		
 	public void ChangeSelection () {
 		if (selected == false && playerData.activeSpells.Count < 4) {
-			buttonImage.color = Color.green;
+			buttonImage.color = Color.white;
 			playerData.activeSpells.Add (spellName.text);
 			selected = true;
 		} else if (selected == true) {
-			buttonImage.color = Color.grey;
+			buttonImage.color = new Color32(0xB4, 0xB4, 0xB4,0xFF);
 			playerData.activeSpells.Remove (spellName.text);
 			selected = false;
-		} else {
-			Debug.Log ("You can only choose a maximum of 4 spells");
 		}
 	}
 

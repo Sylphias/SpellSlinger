@@ -9,8 +9,8 @@ namespace Spells
 		public override void Init ()
 		{
 			Radius = 16;
-			Damage = 40;
-			Cooldown = 1;
+			Damage = 10;
+			Cooldown = 10;
 			ExplosionForce = 0;
 	
 		}
@@ -21,7 +21,7 @@ namespace Spells
 			Collider[] colliders = Physics.OverlapSphere (gameObject.transform.position,Radius);
 			Dictionary<string,float> messages = new Dictionary<string,float> ();
 			messages.Add ("TakeDamage", Damage);
-			messages.Add ("RpcBurned", 1);
+			messages.Add ("RpcBurned", 2);
 			ExplosionUtilities.ExplosionScan (this,messages, colliders, gameObject.transform.position,true);
 			Destroy (gameObject,2);
 		}

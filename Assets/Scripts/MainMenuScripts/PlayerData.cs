@@ -11,7 +11,8 @@ public class PlayerData : MonoBehaviour {
 		if (!userName.Equals ("")) {
 			Debug.Log ("Getting prefs");
 			userName = PlayerPrefs.GetString ("username");
-			if (!PlayerPrefs.GetString ("spell1").Equals ("")) {
+			if (activeSpells.Count == 0) {
+				activeSpells.Clear();
 				activeSpells.Add (PlayerPrefs.GetString ("spell1"));
 				activeSpells.Add (PlayerPrefs.GetString ("spell2"));
 				activeSpells.Add (PlayerPrefs.GetString ("spell3"));

@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour,IPlayer {
 
 	[SyncVar] public string playerUniqueIdentity;
     GameObject playerCam;
-
+//	[SyncVar]
     public string state{get;set;}
 	public int Kills{get;set;}
 	public int Deaths{get;set;}
@@ -37,20 +37,29 @@ public class Player : NetworkBehaviour,IPlayer {
     void CmdUpdateAllClients()
     {
         RpcUpdateNonLocalClient();
-
     }
 
+	// Initialize the client on all previously joined clients
     [ClientRpc]
     void RpcUpdateNonLocalClient()
     {
         if (!isLocalPlayer)
         {
-            foreach (IPlayer p in GetComponents<IPlayer>())
-            {
-                p.Init();
-            }       
+			foreach (IPlayer p in GetComponents<IPlayer>())
+			{
+				p.Init();
+			}       
         }
     }
+
+	// Initialize all Non local players who have joined prior to this client on this client
+	void InitializeAllNonLocalJoinedPlayers(){
+		foreach(Player p in GameManager.GetAllPlayers()){
+			if(!p.isLocalPlayer)
+				foreach(IPlayer playerComponent in p.GetComponents<IPlayer>())
+					p.Init();
+		}
+	}
 
 	public override void OnStartLocalPlayer(){
         if (!isLocalPlayer) return;
@@ -63,7 +72,6 @@ public class Player : NetworkBehaviour,IPlayer {
 
     public void Init()
     {
-        Debug.LogError(transform.name + " Player init");
         state = "alive";
         Deaths = 0;
         BuffList = new List<IBuffable>();
@@ -86,7 +94,6 @@ public class Player : NetworkBehaviour,IPlayer {
 	void OnDisable()
 	{
         Destroy(playerCam);
-		Debug.Log("Disconneted");
 	}
 
     // Fixed Update ticks every 0.02
@@ -103,7 +110,6 @@ public class Player : NetworkBehaviour,IPlayer {
 	// Checks and updates buffs on the user. 
 	// To prevent
 	public void checkBuffs(){
-
 		// Make a copy of the buff list to iterate through
 		IBuffable [] _buffListCopy = new IBuffable[BuffList.Count];
 		BuffList.CopyTo(_buffListCopy,0);

@@ -5,7 +5,6 @@ namespace Spells{
 	{
 		private bool isFinished;
 		public float TickTime{get;set;}
-
 		public string Type {
 			get{ return "BurnDebuff"; }
 		}
@@ -24,12 +23,11 @@ namespace Spells{
 				}
 			}
 		}
-		public BurnDebuff(float damagePerSecond){
-			FinishTime = Time.time + 10.0f;
+		public BurnDebuff(float damagePerSecond,float duration){
+			FinishTime = Time.time + duration;
 			DamagePerSecond = damagePerSecond;
 			TickTime = 1;
 			TimeElapsed = 0;
-
 		}
 		//Resetting Burn does nothing
 		public void Reset(GameObject victim){
@@ -37,7 +35,6 @@ namespace Spells{
 		}
 
 		public void Apply(GameObject victim){
-			Debug.Log ("Applying Burn");
 			HealthbarController playerHealth = (HealthbarController)victim.GetComponent<HealthbarController>();
 			playerHealth.CmdTakeDamage(DamagePerSecond);
 		}

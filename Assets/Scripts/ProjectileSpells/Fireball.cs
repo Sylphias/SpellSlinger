@@ -12,9 +12,9 @@ namespace Spells{
 
 
 		public override void Init(){
-			Damage = 10;
-			ProjectileSpeed = 20;
-			ExplosionForce = 50;
+			Damage = 20;
+			ProjectileSpeed = 30;
+			ExplosionForce = 70;
 			Duration = 5;
 			Radius = 10;
 			Cooldown = 2;

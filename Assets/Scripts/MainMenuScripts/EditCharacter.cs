@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EditCharacter : MonoBehaviour {
 
-	List<string> allSpells = new List<string> {"Iceball", "Fireball", "Stonefist", "Swiftness", "Earthwall", "Frostnova", "Firenova"};
+	List<string> allSpells = new List<string> {"Iceball", "Fireball", "Stonefist", "Swiftness", "Earthwall", "Frostnova", "Firenova", "Blink", "Forcelightning"};
 
 	GameObject localData;
 	PlayerData playerData;

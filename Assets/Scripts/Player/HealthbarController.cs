@@ -23,7 +23,6 @@ public class HealthbarController : NetworkBehaviour,IPlayer {
 	}
 	public override void OnStartLocalPlayer(){
         if (!isLocalPlayer) return;
-        Debug.Log("Player Healthbar initialized");
         player = GetComponent<Player>();
         healthBarFill = GameObject.Find("HealthBarFill").GetComponent<RectTransform>();
         Init();
@@ -35,24 +34,26 @@ public class HealthbarController : NetworkBehaviour,IPlayer {
         miniHealthBar = transform.FindChild("HealthBarBg").FindChild("HPOverlay").GetComponentInChildren<RawImage>();
         currHealth = maxHealth;
     }
-    //Not sure why Syncvar is not working
     public void OnChangeHealth(float health)
 	{
 		currHealth = health;
-		Debug.Log (gameObject.transform.name + " Change health");
 		if (isLocalPlayer)
 			healthBarFill.localScale = new Vector3 (1f, currHealth / maxHealth, 1f);
 		if(miniHealthBar == null)
         	miniHealthBar = transform.FindChild("HealthBarBg").FindChild("HPOverlay").GetComponentInChildren<RawImage>();
 		miniHealthBar.rectTransform.localScale = new Vector3 (currHealth / maxHealth, 1, 1);
-		Debug.Log ("Player Health: " + currHealth);
-		if (currHealth <= 0) {
-			Debug.Log ("Dead.");
-			PlayerDeath pd = GetComponent<PlayerDeath> ();
-			player.Deaths++;
-			player.BuffList = new List<IBuffable> ();
-			pd.DisablePlayer (player.Deaths);
+		if (currHealth <= 0  && isLocalPlayer) {
+			if (player.state == "alive") {
+				Debug.Log ("Dead.");
+				PlayerDeath pd = GetComponent<PlayerDeath> ();
+				pd.DisablePlayer ();
+			}
 		}
+	}
+
+	[Command]
+	public void CmdSetToFullHealth(){
+		currHealth = maxHealth;
 	}
 
     [Command]

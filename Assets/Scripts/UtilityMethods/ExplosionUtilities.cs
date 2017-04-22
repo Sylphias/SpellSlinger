@@ -16,7 +16,7 @@ namespace Spells
                     // Check if the player object is in line of sight of the explosion. if yes apply damage/effects.
 					if (!Physics.Linecast (explosionPoint, playerBody.position, out rch))
 						continue;// Check if RCH has any return values, if no then go to the next iteration
-					bool x = rch.distance > (!ignorePlayer?0:4);
+					bool x = rch.distance > (!ignorePlayer?0:2);
 					Debug.DrawLine (playerBody.position, explosionPoint, Color.red,4);
 					if (rch.collider.tag == "Player" && x ) { 
 							playerHit.ApplyExplosiveKnockback (explosionPoint,spell.ExplosionForce,spell.Radius);

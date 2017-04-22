@@ -21,8 +21,8 @@ public class PlayerController : NetworkBehaviour,IPlayer{
     // }
 
     public void Init(){
-        speed = 30f;
-		lookSensitivity = 2f;
+        speed = 10f;
+		lookSensitivity = 1f;
     }
 
     [Command]

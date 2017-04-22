@@ -20,12 +20,13 @@ namespace Spells
 		public override void Init ()
 		{
 			DoT = 5;
-			Damage = 10;
-			ProjectileSpeed = 5;
+			Damage = 20;
+			ProjectileSpeed = 20;
 			ExplosionForce = 30;
 			KnockbackForce = 20;
 			Duration = 5;
 			Radius = 10;
+			Cooldown = 5;
 		}
 			
 		public void Init(float cooldown, float duration, float radius, float dmg, float speed, float force, float dot, float knockbackFoce){
@@ -36,7 +37,7 @@ namespace Spells
 			ProjectileSpeed = speed	;
 			DoT = dot;
 			ExplosionForce = force;
-			Cooldown = 2;
+			Cooldown = 5;
 		}
 			
 		void Start () {
@@ -48,7 +49,7 @@ namespace Spells
 			if(col.collider.tag =="Player"){
 				PlayerHit playerObj = col.collider.GetComponent<PlayerHit>();
 				Dictionary<string,float> messages = new Dictionary<string,float> ();
-				messages.Add ("TakeDamage", DoT);
+				messages.Add ("TakeDamage", DoT*Time.deltaTime);
 				playerObj.OnHit (messages);
 				playerObj.ApplyKnockback(transform.forward,KnockbackForce);
 			}
@@ -59,7 +60,7 @@ namespace Spells
 
 		void OnCollisionStay(Collision col){
 			if(col.collider.tag =="Player"){
-				col.collider.SendMessage ("TakeDamage", 10);
+				col.collider.SendMessage ("TakeDamage", Damage*Time.deltaTime);
 				col.collider.GetComponent<Rigidbody> ().AddForce (transform.forward*10,ForceMode.Impulse);
 			}
 		}

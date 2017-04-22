@@ -9,8 +9,8 @@ namespace Spells
 		public override void Init ()
 		{
 			Radius = 50;
-			Damage = 5;
-			Cooldown = 1;
+			Damage = 10;
+			Cooldown = 5;
 			ExplosionForce = 0;
 	
 		}

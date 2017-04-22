@@ -15,14 +15,15 @@ namespace Spells
             this.oldSpeedValue = speed;
             this.oldRotationValue = rotation;
         }
-        public FrostDebuff(float speed, float rotation)
+        public FrostDebuff(float speed, float rotation,float duration)
         {
-            finishTime = Time.time + 5.0f; // Adjust the slow timing
+            finishTime = Time.time + duration; // Adjust the slow timing
             TimeElapsed = 0;
             tickTime = 0;
             speedMultiplier = 0.5f;
             oldSpeedValue = speed;
             oldRotationValue = rotation;
+
         }
         public float ComparableValue
         {
@@ -69,7 +70,6 @@ namespace Spells
 
         public void Apply(GameObject victim)
         {
-			
             PlayerController ps = victim.GetComponent<PlayerController>();
 			ps.CmdUpdateSpeed (oldSpeedValue * speedMultiplier);
 

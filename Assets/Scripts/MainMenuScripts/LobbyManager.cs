@@ -43,19 +43,12 @@ public class LobbyManager: NetworkLobbyManager {
 	bool host = false;
 
 	void Start(){
-		LogFilter.currentLogLevel = LogFilter.Debug;
-		Debug.Log ("Network Lobby Manager is running");
 		if (SceneManager.GetActiveScene ().name.Equals ("Menu")) {
 			SetupMenu ();
-		} else {
-			Debug.Log ("I am at the game scene");
-
 		}
-	}
-		
+	}		
 		
 	public void ToHost(){
-		Debug.Log ("ToHost button is pressed");
 		if(Check ()){
 			menuPanel.SetActive(false);
 			hostPanel.SetActive(true);
@@ -63,19 +56,17 @@ public class LobbyManager: NetworkLobbyManager {
 	}
 						
 	public void ListRoom(){
-		Debug.Log ("ListRoom button is pressed");
 		if (Check ()) 
 			ListMatches ();
 	}
 
 	public void Matchmake(){
-		Debug.Log ("Matchmake button is pressed");
 		if (Check ())
 			RandomMatch ();
 	}
 						
 	bool Check(){
-		if (!playerData.userName.Equals("") && playerData.activeSpells.Count == 4) {
+		if (!playerData.userName.Equals("") && playerData.activeSpells.Count >= 4) {
 			return true;
 		} else {
 			PopMessage ("Please load up your character from Edit Character button");
@@ -87,7 +78,6 @@ public class LobbyManager: NetworkLobbyManager {
 
 	//Create Match
 	public void HostMatch(){
-		Debug.Log ("HostMatch");
 		if(roomName.text.Equals("")){
 			PopMessage ("Please enter a room name");
 			return;
@@ -112,19 +102,15 @@ public class LobbyManager: NetworkLobbyManager {
 	}
 
 	public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo){
-		if (success){
-			Debug.Log ("Room is successfully created"); 
+		if (success) { 
 			StartHost (matchInfo);
 			NetworkServer.Listen (matchInfo, 9999);
 			currentNetworkId = (System.UInt64)matchInfo.networkId;
-
-		}
-		else
-			Debug.LogError ("Room failed to be created");
+		} else
+			PopMessage ("Fail to create room");
 	}
 
 	public override void OnStartHost(){
-		Debug.Log("OnStartHost is called");
 		host = true;
 		hostPanel.SetActive (false);
 		lobbyPanel.SetActive (true);
@@ -143,7 +129,6 @@ public class LobbyManager: NetworkLobbyManager {
 		if (success) {
 			NetworkManager.singleton.matches = matches;
 			if (matches.Count >= 1) {
-				Debug.Log ("OnMatchList success: Populating list");
 				PopulateList (matches);
 				menuPanel.SetActive(false);
 				joinPanel.SetActive(true);
@@ -157,15 +142,12 @@ public class LobbyManager: NetworkLobbyManager {
 	}
 		
 	public void PopulateList (List<MatchInfoSnapshot> matches){
-		Debug.Log ("Populating the list of matches");
-
 		foreach (Transform child in roomListParent.transform) {
 			GameObject.Destroy (child.gameObject);
 		}
 
 		foreach (MatchInfoSnapshot match in matches) {
 			string matchLabel = match.name + " [ " + match.currentSize + "/" + match.maxSize + " ]";
-			Debug.Log (matchLabel);
 			Button tempButton = (Button)Instantiate (roomOptionPrefab);
 			tempButton.GetComponentInChildren<Text>().text = matchLabel;
 			tempButton.onClick.RemoveAllListeners ();
@@ -182,7 +164,6 @@ public class LobbyManager: NetworkLobbyManager {
 		
 	//Join Match
 	public void JoinMatch(){
-		Debug.Log ("JoinMatch");
 		NetworkManager.singleton.matchMaker.JoinMatch ((NetworkID)selectedNetworkId, "", "", "", 0, 0, OnMatchJoined);
 	}
 
@@ -197,27 +178,20 @@ public class LobbyManager: NetworkLobbyManager {
 	public void OnRandomMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches){
 		if (success) {
 			if (matches.Count >= 1) {
-				Debug.Log ("There is a match for RandomMatch");
-				Debug.Log (matches.Count);
 				NetworkManager.singleton.matchMaker.JoinMatch (matches [matches.Count - 1].networkId, "", "", "", 0, 0, OnMatchJoined); 
 			} else {
 				PopMessage ("Sorry! There is no available room :C");
 			}
-		} else {
-			Debug.LogError ("Unable to RandomMatch");
 		}
 	}
 
 	public override void OnMatchJoined(bool success, string extendedInfo, MatchInfo matchInfo){
 		if (success) {
-			Debug.Log ("OnMatchJoined success");
 			StartClient (matchInfo);
 			currentNetworkId = (System.UInt64)matchInfo.networkId;
 			menuPanel.SetActive(false);
 			joinPanel.SetActive(false);
 			lobbyPanel.SetActive(true);
-		} else {
-			Debug.Log ("OnMatchJoined fail");
 		}
 	}
 		
@@ -228,10 +202,11 @@ public class LobbyManager: NetworkLobbyManager {
 
 	public void OnMatchDropConnection(bool success, string extendedInfo){
 		if (success) {
-			Debug.Log ("Connection is dropped");
 			if (host) {
-				Debug.Log ("I am a host");
+				NetworkManager.singleton.matchMaker.DestroyMatch (matchInfo.networkId, 0, OnDestroyMatch);
 				NetworkManager.singleton.StopHost ();
+				NetworkManager.singleton.StopClient ();
+				SetupMenu();
 			} else {
 				NetworkManager.singleton.StopClient ();
 			}
@@ -240,30 +215,19 @@ public class LobbyManager: NetworkLobbyManager {
 		
 	public override void OnStopClient(){
 		base.OnStopClient ();
-		Debug.Log ("Stopped Client");
 		lobbyPanel.SetActive(false);
 		menuPanel.SetActive (true);
+		background.SetActive (true);
 	}
 				
 	//Transition from Lobby Player to Game Player!
 	public override bool OnLobbyServerSceneLoadedForPlayer(GameObject lobbyPlayer, GameObject gamePlayer){
-		Debug.Log ("Scene Loaded");
-
 		LobbyPlayer source = lobbyPlayer.GetComponent<LobbyPlayer>();
-		Player player = gamePlayer.GetComponent<Player>();
 		PlayerSpellcasting playerSpell = gamePlayer.GetComponent<PlayerSpellcasting>();
-
-
-		if (source != null && player != null ) {
-			
-			Debug.Log ("Should be able to do transfer");
-			player.playerName = source.UserName;
-			playerSpell.spellList = new string[4];
-			source.ActiveSpells.CopyTo (playerSpell.spellList);
-		} else {
-			Debug.Log ("Null players detected");
+		if (source != null && playerSpell != null ) {
+			for (int i = 0; i < source.ActiveSpells.Count; i++)
+				playerSpell.spellList.Add(source.ActiveSpells[i]);
 		}
-
 		return true;
 	}
 
@@ -271,6 +235,7 @@ public class LobbyManager: NetworkLobbyManager {
 	public override void OnClientSceneChanged (NetworkConnection conn){
 		string loadedSceneName = SceneManager.GetSceneAt (0).name;
 		if (loadedSceneName == "Menu") {
+			
 			background.SetActive (true);
 			lobbyPanel.SetActive (true);
 			//stopButton.gameObject.SetActive (false);
@@ -284,7 +249,6 @@ public class LobbyManager: NetworkLobbyManager {
 
 	public override void OnLobbyServerPlayersReady ()
 	{
-		Debug.Log ("OnLobbyServerPlayerReady");
 		playerListParent = GameObject.Find ("Player List").GetComponent<RectTransform> ();
 		LobbyPlayer[] playerList = playerListParent.GetComponentsInChildren<LobbyPlayer> ();
 		foreach (LobbyPlayer player in playerList) {
@@ -313,10 +277,8 @@ public class LobbyManager: NetworkLobbyManager {
 
 
 	public void SetupMenu (){
-		Debug.Log ("Setting up menu");
-
 		playerData = GameObject.Find ("Player Data").GetComponent<PlayerData> ();
-
+		background.SetActive (true);
 		toHostButton.onClick.AddListener (() => ToHost());
 		toJoinButton.onClick.AddListener (() => ListRoom ()); 
 		matchmakeButton.onClick.AddListener (() => Matchmake ());
@@ -324,38 +286,6 @@ public class LobbyManager: NetworkLobbyManager {
 		joinButton.onClick.AddListener(() => JoinMatch());
 		quitButton.onClick.AddListener (() => DropMatch ());
 		popupOkButton.onClick.AddListener (() => DeactivatePopup());
-
-		/*
-		menuPanel = GameObject.Find ("Main Menu Panel");
-		toHostButton = GameObject.Find ("To Host Button").GetComponent<Button> ();
-		toJoinButton = GameObject.Find ("To Join Button").GetComponent<Button> ();
-		matchmakeButton = GameObject.Find ("Matchmaker Button").GetComponent<Button> ();
-		toHostButton.onClick.AddListener (() => ToHost());
-		toJoinButton.onClick.AddListener (() => ListRoom ()); 
-		matchmakeButton.onClick.AddListener (() => Matchmake ());
-
-		hostPanel = GameObject.Find ("Host Panel");
-		roomName = GameObject.Find ("Room Name Field").GetComponent<InputField> ();
-		roomSize = GameObject.Find ("Max Player Field").GetComponent<InputField> ();
-		hostButton = GameObject.Find ("Host Game Button").GetComponent<Button> ();
-		hostButton.onClick.AddListener (() => HostMatch());
-
-		joinPanel = GameObject.Find ("Join Panel");
-		joinButton = GameObject.Find ("Join Game Button").GetComponent<Button> ();
-		joinButton.onClick.AddListener(() => JoinMatch()); 
-
-		lobbyPanel = GameObject.Find ("Lobby Panel");
-		quitButton = GameObject.Find ("Quit Button").GetComponent<Button> ();
-		quitButton.onClick.AddListener (() => DropMatch ());
-
-		popupPanel = GameObject.Find ("PopUp Panel");
-		popupOkButton = GameObject.Find ("Ok Button").GetComponent<Button> ();
-		popupOkButton.onClick.AddListener (() => DeactivatePopup());
-
-		hostPanel.SetActive(false);
-		joinPanel.SetActive(false);
-		lobbyPanel.SetActive(false);
-		popupPanel.SetActive(false);
-		*/
 	}
+		
 }

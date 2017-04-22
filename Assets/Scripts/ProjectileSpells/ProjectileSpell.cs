@@ -8,7 +8,6 @@ namespace Spells
 {
 	public abstract class ProjectileSpell: NetworkBehaviour,ISpell,IProjectile,IExplosion{
 		
-		private bool isCooldown;
 		[SyncVar]
 		private float duration;
 		[SyncVar]

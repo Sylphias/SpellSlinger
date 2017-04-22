@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMotor : NetworkBehaviour {
+public class PlayerMotor : NetworkBehaviour,IPlayer {
 
     private Vector3 velocity = Vector3.zero;
     private Vector3 rotation = Vector3.zero;
@@ -35,21 +35,23 @@ public class PlayerMotor : NetworkBehaviour {
 
     void FixedUpdate()
     {
-
+		if (playerAnimations == null)
+			playerAnimations = GetComponent<Animation> ();
+//		|| Mathf.Abs (velocity.z) > 0.2)
+		if (Mathf.Abs (GetComponent<Rigidbody>().velocity.magnitude) > 0.2 || Mathf.Abs (velocity.z) > 0.2||Mathf.Abs (velocity.x) > 0.2)
+		{
+			playerAnimations.CrossFade("Run");
+		} else if (!playerAnimations.IsPlaying("Idle2")&& !playerAnimations.IsPlaying("Death1")) {
+			playerAnimations.CrossFade("Idle2");
+		} 
         if (!isLocalPlayer) return;
-
         if (player.state == "alive" || player.state == "respawned") 
             PerformMovement();
     }
 
     void PerformMovement()
     {
-		if (Mathf.Abs (velocity.x) > 0.2 || Mathf.Abs (velocity.z) > 0.2)
-		{
-			playerAnimations.CrossFade("Run");
-		} else if (!playerAnimations.IsPlaying("Idle2")) {
-			playerAnimations.CrossFade("Idle2");
-		} 
+
         if (velocity != Vector3.zero)
         {
             PerformRotation();

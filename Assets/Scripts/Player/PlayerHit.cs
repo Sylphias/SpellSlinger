@@ -8,13 +8,16 @@ public class PlayerHit : NetworkBehaviour
 {
     Player player;
     PlayerController controller;
-    delegate void MethodDelegate(float value);
+    GameObject fireExp,frostExp;
+
     public override void OnStartLocalPlayer() {
         if (!isLocalPlayer) return;
-        Debug.Log(gameObject.transform.name + "Playerhit Initialized");
         player = GetComponent<Player>();
         controller = GetComponent<PlayerController>();
+        fireExp = Resources.Load ("Spells/Firedot", typeof(GameObject))as GameObject;
+        frostExp = Resources.Load ("Spells/Frostdot", typeof(GameObject))as GameObject;
         base.OnStartLocalPlayer();
+
     }
 
     public void ApplyDebuffBuff(string buffName, float value) {
@@ -48,6 +51,13 @@ public class PlayerHit : NetworkBehaviour
         if (!isLocalPlayer) return;
         CmdKnockback(direction, force);
     }
+    [Command]
+    public void CmdAddEffectToPlayer(string method, float value) {
+        Type type = GetComponent<PlayerHit>().GetType();
+        object[] values = { value };
+        MethodInfo meth = type.GetMethod(method);
+        meth.Invoke(GetComponent<PlayerHit>(), values);
+    }
 
     [Command]
     public void CmdKnockback(Vector3 direction, float force) {
@@ -57,13 +67,6 @@ public class PlayerHit : NetworkBehaviour
     [Command]
     public void CmdExplosionKnockback(Vector3 explosionPoint, float explosionForce, float radius) {
         RpcExplosionKnockback(explosionPoint, explosionForce, radius);
-    }
-    [Command]
-    public void CmdAddEffectToPlayer(string method, float value) {
-        Type type = GetComponent<PlayerHit>().GetType();
-        object[] values = { value };
-        MethodInfo meth = type.GetMethod(method);
-        meth.Invoke(GetComponent<PlayerHit>(), values);
     }
 
     [ClientRpc]
@@ -81,6 +84,7 @@ public class PlayerHit : NetworkBehaviour
 		Debug.Log ("Knockback");
 		GetComponent<Rigidbody> ().AddForce ((direction * force),ForceMode.Impulse);
 	}
+
 	[ClientRpc]
 	public void RpcSwift(float value){
 		SwiftBuff sb = new SwiftBuff(controller.speed,controller.lookSensitivity);
@@ -98,32 +102,44 @@ public class PlayerHit : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
         Debug.Log("Chilled");
-        FrostDebuff fd = new FrostDebuff(controller.speed, controller.lookSensitivity);
-        if (player.BuffList.Count == 0)
+        float duration = 5.0f;
+        FrostDebuff fd = new FrostDebuff(controller.speed, controller.lookSensitivity,duration);
+		GameObject exp =(GameObject) Instantiate (frostExp, transform.position, transform.rotation);
+		spawnDoTEffect (exp, duration);
+		if (player.BuffList.Count == 0)
         {
             player.BuffList.Add(fd);
             return;
         }
         // Check if there is another chilled debuf in the bufflist, if yes then replace with the new debuff to refresh the time
-        replaceOldDebuff("BurnDebuff", fd);
+        replaceOldDebuff("FrostDebuff", fd);
     }
 
 	[ClientRpc]
 	public void RpcBurned(float value){
         if(!isLocalPlayer) return;
 		Debug.Log ("Burned");
-		BurnDebuff br = new BurnDebuff(value);
+        float duration = 10.0f;
+		GameObject exp =(GameObject) Instantiate (fireExp, transform.position, transform.rotation);
+		spawnDoTEffect (exp, duration);
+		BurnDebuff br = new BurnDebuff(value,duration);
 		if (player.BuffList.Count == 0) {
 			player.BuffList.Add (br);
 			return;
 		}
+
 		replaceOldDebuff("BurnDebuff",br);
 	}
 
+	void spawnDoTEffect(GameObject exp, float duration){
+		exp.GetComponent<DamageOverTimeEffect>().player = gameObject;
+		Destroy (exp, duration);
+	}
+
+
     public void TakeDamage(float damage)
     {
-        Debug.Log("damaged" + damage);
-        GetComponent<HealthbarController>().CmdTakeDamage(damage);
+    	GetComponent<HealthbarController>().CmdTakeDamage(damage);
     }
 
 	public void replaceOldDebuff(string buffTypeString,IBuffable newBuff){
